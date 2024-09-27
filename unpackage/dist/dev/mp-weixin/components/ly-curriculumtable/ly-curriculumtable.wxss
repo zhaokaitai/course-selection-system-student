@@ -1,0 +1,170 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.bottom.data-v-8752c038 {
+  background-color: white;
+  padding: 15px 0px;
+  border-radius: 15px 15px 0px 0px;
+}
+.bottom ._h4.data-v-8752c038 {
+  text-align: center;
+  padding-bottom: 10px;
+}
+.cu-bar.data-v-8752c038 {
+  display: flex;
+  position: relative;
+  align-items: center;
+  min-height: 70rpx;
+  justify-content: space-between;
+  margin: 0px 15px;
+  font-weight: bold;
+}
+.timetable.data-v-8752c038 {
+  background: white;
+  border: 1px solid #E4E7ED;
+  border-radius: 8rpx;
+}
+.timetable .header-wrap.data-v-8752c038 {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 6px;
+}
+.timetable .header-wrap .left-text.data-v-8752c038 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.timetable .header-wrap .month-text.data-v-8752c038 {
+  width: 30px;
+  height: 100%;
+  text-align: center;
+  font-weight: bold;
+  padding: 6px 0px;
+}
+.timetable .header-wrap .week-txt.data-v-8752c038 {
+  width: 80%;
+  height: 60%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 5px;
+  border-radius: 16rpx  16rpx 0px 0px;
+}
+.timetable .header-wrap .date-txt.data-v-8752c038 {
+  width: 80%;
+  height: 40%;
+  text-align: center;
+  font-size: 14px;
+  color: #999;
+  padding-bottom: 5px;
+  border-radius: 0px 0px 16rpx  16rpx;
+}
+.timetable .header-wrap .text-content.data-v-8752c038 {
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 3rpx;
+}
+.timetable .header-wrap .text-content-today.data-v-8752c038 {
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 3rpx;
+}
+.timetable .main.data-v-8752c038 {
+  position: relative;
+  margin-top: 2px;
+}
+.timetable .main .row.data-v-8752c038 {
+  height: 80px;
+  position: relative;
+}
+.timetable .main .row.data-v-8752c038:after {
+  content: '';
+  height: 0;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-bottom: 1rpx dashed #E4E7ED;
+}
+.timetable .main .row .time-item.data-v-8752c038 {
+  height: 100%;
+  width: 70rpx;
+  text-align: center;
+  background: #F5F7FA;
+}
+.timetable .main .row .time-item .index.data-v-8752c038 {
+  padding-bottom: 8rpx;
+  padding-top: 16rpx;
+  font-size: 18px;
+}
+.timetable .main .row .time-item .time.data-v-8752c038 {
+  font-size: 12px;
+  color: #999;
+}
+.timetable .main .course-container.data-v-8752c038 {
+  position: absolute;
+  top: 0;
+  left: 75rpx;
+  width: calc(100% - 75rpx);
+  height: 100%;
+  display: flex;
+}
+.timetable .main .course-container .week.data-v-8752c038 {
+  /* //控制评分法
+        //flex: 1;
+        //width: 0;
+        //flex-grow: 1;
+        //display: flex;
+        //flex-direction: column; */
+}
+.timetable .main .course-container .week .courseList.data-v-8752c038 {
+  width: 90rpx;
+  word-break: break-all;
+  color: white;
+  overflow: hidden;
+  font-size: 15px;
+  margin: 5px 1px;
+}
+.timetable .main .course-container .week .courseList .course.data-v-8752c038 {
+  border-radius: 16rpx;
+  text-align: center;
+  border-style: solid;
+  border-width: 1px;
+}
+

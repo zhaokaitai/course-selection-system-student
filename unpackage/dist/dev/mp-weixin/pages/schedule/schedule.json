@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "schedule",
+  "usingComponents": {
+    "ly-curriculumtable": "/components/ly-curriculumtable/ly-curriculumtable",
+    "timetable": "/components/ly-curriculumtable/ly-curriculumtable"
+  }
+}

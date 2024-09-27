@@ -1,0 +1,47 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/rePassword/rePassword",
+    "pages/schedule/schedule",
+    "pages/my/my",
+    "pages/chosenCourse/chosenCourse",
+    "pages/courseDetail/courseDetail"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#007AFF",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "/static/tabBar/home.png",
+        "selectedIconPath": "/static/tabBar/select_home.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/schedule/schedule",
+        "iconPath": "/static/tabBar/schedule.png",
+        "selectedIconPath": "/static/tabBar/select_schedule.png",
+        "text": "个人课表"
+      },
+      {
+        "pagePath": "pages/chosenCourse/chosenCourse",
+        "text": "已选课程"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "个人中心"
+      }
+    ]
+  },
+  "usingComponents": {}
+}
