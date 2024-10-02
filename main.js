@@ -3,7 +3,9 @@ import App from './App'
 // #ifndef VUE3
 import Vue from 'vue'
 import './uni.promisify.adaptor'
+import { courseRequest } from './util/request'
 Vue.config.productionTip = false
+Vue.prototype.$courseRequest = courseRequest
 App.mpType = 'app'
 const app = new Vue({
   ...App

@@ -1557,7 +1557,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"chooseCourse","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"chooseCourse","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -8923,7 +8923,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"chooseCourse","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"chooseCourse","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8944,14 +8944,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"chooseCourse","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"chooseCourse","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"chooseCourse","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"chooseCourse","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -9047,7 +9047,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"chooseCourse","VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_DARK_MODE":"false","VUE_APP_NAME":"chooseCourse","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9634,7 +9634,55 @@ uni.addInterceptor({
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
-/* 34 */,
+/* 34 */
+/*!*****************************************************!*\
+  !*** E:/study/uni_app/chooseCourse/util/request.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.courseRequest = void 0;
+var baseURL = 'http://localhost:8080';
+var courseRequest = function courseRequest(options) {
+  //加载loading
+  uni.showLoading({
+    title: '加载中'
+  });
+  return new Promise(function (resolve, reject) {
+    uni.request({
+      // 开发者服务器接口地址（请求服务器地址 + 具体接口名）
+      url: baseURL + options.url,
+      // 请求方式（若不传，则默认为 GET ）
+      method: options.method || 'GET',
+      // 请求参数（若不传，则默认为 {} ）
+      data: options.data || {},
+      // 请求成功
+
+      success: function success(res) {
+        resolve(res);
+      },
+      //请求失败
+      fail: function fail(err) {
+        reject(err);
+      },
+      //请求结束之后，执行的回调函数（成功或失败都会执行）
+      complete: function complete() {
+        //隐藏loading
+        uni.hideLoading();
+      }
+    });
+  });
+};
+exports.courseRequest = courseRequest;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
+
+/***/ }),
 /* 35 */,
 /* 36 */,
 /* 37 */,
@@ -9691,7 +9739,10 @@ uni.addInterceptor({
 /* 88 */,
 /* 89 */,
 /* 90 */,
-/* 91 */
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */
 /*!********************************************************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/uni_modules/uni-search-bar/components/uni-search-bar/i18n/index.js ***!
   \********************************************************************************************************/
@@ -9706,9 +9757,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 92));
-var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 93));
-var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 94));
+var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 95));
+var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 96));
+var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 97));
 var _default = {
   en: _en.default,
   'zh-Hans': _zhHans.default,
@@ -9717,7 +9768,7 @@ var _default = {
 exports.default = _default;
 
 /***/ }),
-/* 92 */
+/* 95 */
 /*!*******************************************************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/uni_modules/uni-search-bar/components/uni-search-bar/i18n/en.json ***!
   \*******************************************************************************************************/
@@ -9727,7 +9778,7 @@ exports.default = _default;
 module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-bar.placeholder\":\"Search enter content\"}");
 
 /***/ }),
-/* 93 */
+/* 96 */
 /*!************************************************************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/uni_modules/uni-search-bar/components/uni-search-bar/i18n/zh-Hans.json ***!
   \************************************************************************************************************/
@@ -9737,7 +9788,7 @@ module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-
 module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"取消\",\"uni-search-bar.placeholder\":\"请输入搜索内容\"}");
 
 /***/ }),
-/* 94 */
+/* 97 */
 /*!************************************************************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/uni_modules/uni-search-bar/components/uni-search-bar/i18n/zh-Hant.json ***!
   \************************************************************************************************************/
@@ -9747,9 +9798,6 @@ module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"取消\",\"uni-search-
 module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"取消\",\"uni-search-bar.placeholder\":\"請輸入搜索內容\"}");
 
 /***/ }),
-/* 95 */,
-/* 96 */,
-/* 97 */,
 /* 98 */,
 /* 99 */,
 /* 100 */,
@@ -9782,7 +9830,38 @@ module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"取消\",\"uni-search-
 /* 127 */,
 /* 128 */,
 /* 129 */,
-/* 130 */
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */,
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */,
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */
 /*!************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js ***!
   \************************************************************************************/
@@ -9797,20 +9876,20 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 131));
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ 133));
+var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 162));
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ 164));
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ 5));
 var _typeof2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/typeof */ 13));
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ 18));
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 134));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 165));
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ 11));
-var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ 135));
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ 136));
-var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ 137));
-var _wrapNativeSuper2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/wrapNativeSuper */ 138));
+var _inherits2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/inherits */ 166));
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ 167));
+var _getPrototypeOf2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ 168));
+var _wrapNativeSuper2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/wrapNativeSuper */ 169));
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ 23));
 var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/createClass */ 24));
-var _pages = _interopRequireDefault(__webpack_require__(/*! @/pages.json */ 140));
+var _pages = _interopRequireDefault(__webpack_require__(/*! @/pages.json */ 171));
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e33) { throw _e33; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e34) { didErr = true; err = _e34; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
@@ -10263,7 +10342,7 @@ var S = "development" === "development",
   x = true;
 var O = "";
 try {
-  O = (__webpack_require__(/*! uni-stat-config */ 141).default || __webpack_require__(/*! uni-stat-config */ 141)).appid;
+  O = (__webpack_require__(/*! uni-stat-config */ 172).default || __webpack_require__(/*! uni-stat-config */ 172)).appid;
 } catch (e) {}
 var E = {};
 function L(e) {
@@ -17690,7 +17769,7 @@ exports.default = Js;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../webpack/buildin/global.js */ 3), __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/wx.js */ 1)["default"]))
 
 /***/ }),
-/* 131 */
+/* 162 */
 /*!************************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/@babel/runtime/regenerator/index.js ***!
   \************************************************************************************************/
@@ -17699,11 +17778,11 @@ exports.default = Js;
 
 // TODO(Babel 8): Remove this file.
 
-var runtime = __webpack_require__(/*! @babel/runtime/helpers/regeneratorRuntime */ 132)();
+var runtime = __webpack_require__(/*! @babel/runtime/helpers/regeneratorRuntime */ 163)();
 module.exports = runtime;
 
 /***/ }),
-/* 132 */
+/* 163 */
 /*!*******************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/regeneratorRuntime.js ***!
   \*******************************************************************/
@@ -18024,7 +18103,7 @@ function _regeneratorRuntime() {
 module.exports = _regeneratorRuntime, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
-/* 133 */
+/* 164 */
 /*!**********************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/assertThisInitialized.js ***!
   \**********************************************************************/
@@ -18040,7 +18119,7 @@ function _assertThisInitialized(self) {
 module.exports = _assertThisInitialized, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
-/* 134 */
+/* 165 */
 /*!*****************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/asyncToGenerator.js ***!
   \*****************************************************************/
@@ -18080,7 +18159,7 @@ function _asyncToGenerator(fn) {
 module.exports = _asyncToGenerator, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
-/* 135 */
+/* 166 */
 /*!*********************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/inherits.js ***!
   \*********************************************************/
@@ -18107,7 +18186,7 @@ function _inherits(subClass, superClass) {
 module.exports = _inherits, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
-/* 136 */
+/* 167 */
 /*!**************************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js ***!
   \**************************************************************************/
@@ -18115,7 +18194,7 @@ module.exports = _inherits, module.exports.__esModule = true, module.exports["de
 /***/ (function(module, exports, __webpack_require__) {
 
 var _typeof = __webpack_require__(/*! ./typeof.js */ 13)["default"];
-var assertThisInitialized = __webpack_require__(/*! ./assertThisInitialized.js */ 133);
+var assertThisInitialized = __webpack_require__(/*! ./assertThisInitialized.js */ 164);
 function _possibleConstructorReturn(self, call) {
   if (call && (_typeof(call) === "object" || typeof call === "function")) {
     return call;
@@ -18127,7 +18206,7 @@ function _possibleConstructorReturn(self, call) {
 module.exports = _possibleConstructorReturn, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
-/* 137 */
+/* 168 */
 /*!***************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/getPrototypeOf.js ***!
   \***************************************************************/
@@ -18143,16 +18222,16 @@ function _getPrototypeOf(o) {
 module.exports = _getPrototypeOf, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
-/* 138 */
+/* 169 */
 /*!****************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/wrapNativeSuper.js ***!
   \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getPrototypeOf = __webpack_require__(/*! ./getPrototypeOf.js */ 137);
+var getPrototypeOf = __webpack_require__(/*! ./getPrototypeOf.js */ 168);
 var setPrototypeOf = __webpack_require__(/*! ./setPrototypeOf.js */ 16);
-var isNativeFunction = __webpack_require__(/*! ./isNativeFunction.js */ 139);
+var isNativeFunction = __webpack_require__(/*! ./isNativeFunction.js */ 170);
 var construct = __webpack_require__(/*! ./construct.js */ 15);
 function _wrapNativeSuper(Class) {
   var _cache = typeof Map === "function" ? new Map() : undefined;
@@ -18183,7 +18262,7 @@ function _wrapNativeSuper(Class) {
 module.exports = _wrapNativeSuper, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
-/* 139 */
+/* 170 */
 /*!*****************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/isNativeFunction.js ***!
   \*****************************************************************/
@@ -18200,7 +18279,7 @@ function _isNativeFunction(fn) {
 module.exports = _isNativeFunction, module.exports.__esModule = true, module.exports["default"] = module.exports;
 
 /***/ }),
-/* 140 */
+/* 171 */
 /*!*****************************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/pages.json?{"type":"origin-pages-json"} ***!
   \*****************************************************************************/
@@ -18295,7 +18374,7 @@ var _default = {
 exports.default = _default;
 
 /***/ }),
-/* 141 */
+/* 172 */
 /*!****************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/pages.json?{"type":"stat"} ***!
   \****************************************************************/
@@ -18315,21 +18394,21 @@ var _default = {
 exports.default = _default;
 
 /***/ }),
-/* 142 */,
-/* 143 */,
-/* 144 */,
-/* 145 */,
-/* 146 */,
-/* 147 */,
-/* 148 */,
-/* 149 */,
-/* 150 */,
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
-/* 155 */,
-/* 156 */
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */
 /*!*****************************************************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/uni_modules/uni-icons/components/uni-icons/uniicons_file_vue.js ***!
   \*****************************************************************************************************/
@@ -18832,14 +18911,21 @@ var fontData = [{
 exports.fontData = fontData;
 
 /***/ }),
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */
 /*!*************************************************************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/uni_modules/uni-transition/components/uni-transition/createAnimation.js ***!
   \*************************************************************************************************************/
@@ -18973,12 +19059,12 @@ function createAnimation(option, _this) {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
-/* 165 */,
-/* 166 */,
-/* 167 */,
-/* 168 */,
-/* 169 */,
-/* 170 */
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */
 /*!******************************************************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/uni_modules/uni-load-more/components/uni-load-more/i18n/index.js ***!
   \******************************************************************************************************/
@@ -18993,9 +19079,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 171));
-var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 172));
-var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 173));
+var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 209));
+var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 210));
+var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 211));
 var _default = {
   en: _en.default,
   'zh-Hans': _zhHans.default,
@@ -19004,7 +19090,7 @@ var _default = {
 exports.default = _default;
 
 /***/ }),
-/* 171 */
+/* 209 */
 /*!*****************************************************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/uni_modules/uni-load-more/components/uni-load-more/i18n/en.json ***!
   \*****************************************************************************************************/
@@ -19014,7 +19100,7 @@ exports.default = _default;
 module.exports = JSON.parse("{\"uni-load-more.contentdown\":\"Pull up to show more\",\"uni-load-more.contentrefresh\":\"loading...\",\"uni-load-more.contentnomore\":\"No more data\"}");
 
 /***/ }),
-/* 172 */
+/* 210 */
 /*!**********************************************************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/uni_modules/uni-load-more/components/uni-load-more/i18n/zh-Hans.json ***!
   \**********************************************************************************************************/
@@ -19024,7 +19110,7 @@ module.exports = JSON.parse("{\"uni-load-more.contentdown\":\"Pull up to show mo
 module.exports = JSON.parse("{\"uni-load-more.contentdown\":\"上拉显示更多\",\"uni-load-more.contentrefresh\":\"正在加载...\",\"uni-load-more.contentnomore\":\"没有更多数据了\"}");
 
 /***/ }),
-/* 173 */
+/* 211 */
 /*!**********************************************************************************************************!*\
   !*** E:/study/uni_app/chooseCourse/uni_modules/uni-load-more/components/uni-load-more/i18n/zh-Hant.json ***!
   \**********************************************************************************************************/

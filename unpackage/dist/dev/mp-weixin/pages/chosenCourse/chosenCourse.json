@@ -2,8 +2,6 @@
   "navigationBarTitleText": "",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "uni-collapse": "/uni_modules/uni-collapse/components/uni-collapse/uni-collapse",
-    "uni-collapse-item": "/uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item",
     "uni-table": "/uni_modules/uni-table/components/uni-table/uni-table",
     "uni-tr": "/uni_modules/uni-table/components/uni-tr/uni-tr",
     "uni-th": "/uni_modules/uni-table/components/uni-th/uni-th",

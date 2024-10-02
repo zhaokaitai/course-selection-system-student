@@ -23,7 +23,7 @@
         <form class="cl" v-if="navIndex==0">
           <view class="t-a">
 						<text class="txt">学号</text>
-						<input name="studentNumber" placeholder="请输入您的学号" maxlength="12" v-model="phone" />
+						<input name="studentNumber" placeholder="请输入您的学号" maxlength="12" v-model="studentNumber" />
 					</view>
 
           <view class="t-a">
@@ -75,7 +75,31 @@ export default {
 
     //账号密码登录
     handleLogin() {
-      console.log("登录");
+      
+      //账号密码
+      let studentNumber = this.studentNumber;
+      let studentPassword = this.password;
+      //请求后端
+      this.$courseRequest({
+        url:"/student/login",
+        method:'POST',
+        data:{
+          studentNumber: studentNumber,
+          studentPassword: studentPassword
+        }
+      }).then(res =>{
+        console.log(res);
+
+        //跳转主页
+        uni.switchTab({
+          url:'/pages/index/index',
+        })
+
+      }).catch(err =>{
+        console.log(err);
+      })
+
+
     },
 
     //验证码发送

@@ -16,11 +16,13 @@ __webpack_require__(/*! uni-pages */ 26);
 var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ 27));
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 25));
 __webpack_require__(/*! ./uni.promisify.adaptor */ 33);
+var _request = __webpack_require__(/*! ./util/request */ 34);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 // @ts-ignore
 wx.__webpack_require_UNI_MP_PLUGIN__ = __webpack_require__;
 _vue.default.config.productionTip = false;
+_vue.default.prototype.$courseRequest = _request.courseRequest;
 _App.default.mpType = 'app';
 var app = new _vue.default(_objectSpread({}, _App.default));
 createApp(app).$mount();
