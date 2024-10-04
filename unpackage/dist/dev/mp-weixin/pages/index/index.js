@@ -100,29 +100,29 @@ __webpack_require__.r(__webpack_exports__);
 var components
 try {
   components = {
-    uniSearchBar: function () {
-      return Promise.all(/*! import() | uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue */ 89))
-    },
     uniCollapse: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-collapse/components/uni-collapse/uni-collapse */ "uni_modules/uni-collapse/components/uni-collapse/uni-collapse").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-collapse/components/uni-collapse/uni-collapse.vue */ 100))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-collapse/components/uni-collapse/uni-collapse */ "uni_modules/uni-collapse/components/uni-collapse/uni-collapse").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-collapse/components/uni-collapse/uni-collapse.vue */ 89))
     },
     uniCollapseItem: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item */ "uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item.vue */ 107))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item */ "uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item.vue */ 96))
     },
     uniTable: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-table/components/uni-table/uni-table */ "uni_modules/uni-table/components/uni-table/uni-table").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-table/components/uni-table/uni-table.vue */ 114))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-table/components/uni-table/uni-table */ "uni_modules/uni-table/components/uni-table/uni-table").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-table/components/uni-table/uni-table.vue */ 103))
     },
     uniTr: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-table/components/uni-tr/uni-tr */ "uni_modules/uni-table/components/uni-tr/uni-tr").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-table/components/uni-tr/uni-tr.vue */ 121))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-table/components/uni-tr/uni-tr */ "uni_modules/uni-table/components/uni-tr/uni-tr").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-table/components/uni-tr/uni-tr.vue */ 110))
     },
     uniTh: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-table/components/uni-th/uni-th */ "uni_modules/uni-table/components/uni-th/uni-th").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-table/components/uni-th/uni-th.vue */ 128))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-table/components/uni-th/uni-th */ "uni_modules/uni-table/components/uni-th/uni-th").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-table/components/uni-th/uni-th.vue */ 117))
     },
     uniTd: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-table/components/uni-td/uni-td */ "uni_modules/uni-table/components/uni-td/uni-td").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-table/components/uni-td/uni-td.vue */ 135))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-table/components/uni-td/uni-td */ "uni_modules/uni-table/components/uni-td/uni-td").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-table/components/uni-td/uni-td.vue */ 124))
     },
     uniPopup: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 142))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 131))
+    },
+    uniSearchBar: function () {
+      return Promise.all(/*! import() | uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue */ 138))
     },
     uniSection: function () {
       return __webpack_require__.e(/*! import() | uni_modules/uni-section/components/uni-section/uni-section */ "uni_modules/uni-section/components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-section/components/uni-section/uni-section.vue */ 149))
@@ -261,6 +261,8 @@ exports.default = void 0;
 //
 //
 //
+//
+//
 var _default = {
   data: function data() {
     return {
@@ -271,19 +273,21 @@ var _default = {
       queryCondition:
       //查询条件
       {
-        year: 0,
-        //年级
         college: "",
         //学院
         subject: "",
         //专业
         courseName: "",
         //课程名称(搜索框用)
-        teacherName: "" //教师名称(搜索框用)
+        courseType: "" //课程类别
       },
 
       collegeValue: 0,
       //学院字段值（用于根据学院筛选专业）
+      //从后端获取的所有课程列表
+      course: [],
+      //展示在前台的课程列表
+      showCourse: [],
       //年级单选框
       courseYear: [{
         text: "2026",
@@ -308,25 +312,25 @@ var _default = {
       courseCollege: [{
         text: "管理科学与信息工程学院",
         value: "管理科学与信息工程学院",
-        cValue: 0
+        cValue: 1
       }, {
         text: "旅游学院",
         value: "旅游学院",
-        cValue: 1
+        cValue: 2
       }],
       //所有专业
       courseSubject: [{
         text: "网络工程",
         value: "网络工程",
-        sValue: 0
+        sValue: 1
       }, {
         text: "软件工程",
         value: "软件工程",
-        sValue: 0
+        sValue: 1
       }, {
         text: "旅游管理",
         value: "旅游管理",
-        sValue: 1
+        sValue: 2
       }],
       //筛选专业
       collegeSubject: [],
@@ -337,18 +341,34 @@ var _default = {
         classroom: "教室",
         chosen: 90,
         //已选人数
-        volume: 95 //容量
+        volume: 95,
+        //容量
+        course_code: "GK_JK_001"
       }, {
         class: "教学2班",
         teacher: "测试教师",
         classroom: "教室",
         chosen: 90,
         //已选人数
-        volume: 95 //容量
-      }]
+        volume: 95,
+        //容量
+        course_code: "GK_JK_002"
+      }],
+      //展示在前台的教学班
+      showCourseClass: []
     };
   },
-  onLoad: function onLoad() {},
+  onLoad: function onLoad() {
+    this.searchAllCourse(); //加载全部课程
+  },
+
+  computed: {
+    /**根据课程代码筛选教学班 */siftClass: function siftClass(code) {
+      return this.courseClass.filter(function (item) {
+        return item.course_code === code;
+      });
+    }
+  },
   methods: {
     /**点击按钮弹出弹出层 */toggle: function toggle(type) {
       this.type = type;
@@ -379,12 +399,27 @@ var _default = {
       });
     },
     /**查询 */searchCourse: function searchCourse() {
-      var yearValue = this.queryCondition.year; //年份
       var collegeValue = this.queryCondition.collegeValue; //学院
       var subjectValue = this.queryCondition.subject; //专业
+      var courseTypeValue = this.queryCondition.courseType; //课程类别
+
+      var searchValue = this.searchValue; //搜索值
 
       //关闭弹出层
       this.$refs.popup.close();
+    },
+    /**查询全部课程 */searchAllCourse: function searchAllCourse() {
+      var that = this;
+      this.$courseRequest({
+        url: "/course/page",
+        method: "GET"
+      }).then(function (res) {
+        that.course = res.data.data.records;
+        that.showCourse = res.data.data.records;
+        console.log(that.course);
+      }).catch(function (err) {
+        console.log(err);
+      });
     }
   }
 };

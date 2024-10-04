@@ -1,8 +1,7 @@
 <template>
 	<!--页面-->
 	<view class="container">
-		<!--搜索栏-->
-		<uni-search-bar v-model="searchValue" @confirm="" />
+
 		<!--查看查询条件的按钮-->
 		<view class="button_box">
 			<button class="query_button" @click="toggle('left')"><text class="button_text">选择筛选条件</text></button>
@@ -11,8 +10,8 @@
 		<!--课程展示-->
 		<view class="course_box"><!--后面使用循环-->
 			<!--使用uni-ui的折叠组件，折叠详情-->
-			<uni-collapse>
-				<uni-collapse-item title="所选课程名称">
+			<uni-collapse v-for="(item, index) in showCourse" :key="index">
+				<uni-collapse-item :title="item.name">
 					<!--课程详细信息和选课按钮-->
 					<uni-table>
 						<uni-tr>
@@ -22,16 +21,18 @@
 							<uni-th width="30" align="center">已选/容量</uni-th>
 							<uni-th width="30" align="center">操作</uni-th>
 						</uni-tr>
-						<uni-tr v-for="(item,index) in courseClass" :key="index">
-							<uni-td>{{ item.class }}</uni-td>
-							<uni-td>{{ item.teacher }}</uni-td>
-							<uni-td>{{ item.classroom }}</uni-td>
-							<uni-td>{{ item.chosen }}/{{ item.volume }}</uni-td>
-							<uni-td><button class="choose" @click=""><text class="button_text">选课</text></button></uni-td>
+						<uni-tr v-for="(item1, index1) in courseClass" v-if="item1.course_code === item.courseCode" :key="index1">
+							<uni-td>{{ item1.class }}</uni-td>
+							<uni-td>{{ item1.teacher }}</uni-td>
+							<uni-td>{{ item1.classroom }}</uni-td>
+							<uni-td>{{ item1.chosen }}/{{ item1.volume }}</uni-td>
+							<uni-td>
+								<button class="choose" @click=""><text class="button_text">选课</text></button>
+							</uni-td>
 						</uni-tr>
 					</uni-table>
 				</uni-collapse-item>
-				
+
 			</uni-collapse>
 		</view>
 
@@ -39,11 +40,13 @@
 		<!--popup弹出层-->
 		<view>
 			<uni-popup ref="popup" background-color="#fff">
-				<!--年级筛选条件-->
+				<!--搜索栏-->
+				<view><uni-search-bar v-model="searchValue" @confirm="searchCourse" /></view>
+				<!--课程类别筛选条件-->
 				<view class="pop-content">
-					<uni-section class="mb-10" title="年级" type="line" titleFontSize="20px"
+					<uni-section class="mb-10" title="课程类别" type="line" titleFontSize="20px"
 						titleColor="#333"></uni-section>
-					<uni-data-checkbox v-model="queryCondition.year" :localdata="courseYear" />
+					<uni-data-checkbox v-model="queryCondition.subject" :localdata="collegeSubject" />
 				</view>
 				<!--学院筛选条件-->
 				<view class="pop-content">
@@ -59,7 +62,6 @@
 					<uni-data-checkbox v-model="queryCondition.subject" :localdata="collegeSubject" />
 				</view>
 
-				<button class="query_button" @click="searchCourse()"><text class="button_text">确认</text></button>
 
 			</uni-popup>
 		</view>
@@ -76,13 +78,16 @@ export default {
 			type: "",//弹出层参数
 			queryCondition://查询条件
 			{
-				year: 0,//年级
 				college: "",//学院
 				subject: "",//专业
 				courseName: "",//课程名称(搜索框用)
-				teacherName: "",//教师名称(搜索框用)
+				courseType: ""//课程类别
 			},
 			collegeValue: 0,//学院字段值（用于根据学院筛选专业）
+			//从后端获取的所有课程列表
+			course: [],
+			//展示在前台的课程列表
+			showCourse:[],
 			//年级单选框
 			courseYear: [
 				{
@@ -115,12 +120,12 @@ export default {
 				{
 					text: "管理科学与信息工程学院",
 					value: "管理科学与信息工程学院",
-					cValue: 0
+					cValue: 1
 				},
 				{
 					text: "旅游学院",
 					value: "旅游学院",
-					cValue: 1
+					cValue: 2
 				}
 			],
 			//所有专业
@@ -128,44 +133,58 @@ export default {
 				{
 					text: "网络工程",
 					value: "网络工程",
-					sValue: 0
+					sValue: 1
 				},
 				{
 					text: "软件工程",
 					value: "软件工程",
-					sValue: 0
+					sValue: 1
 				},
 				{
 					text: "旅游管理",
 					value: "旅游管理",
-					sValue: 1
+					sValue: 2
 				}
 			],
 			//筛选专业
 			collegeSubject: [],
 
 			//所有课程的教学班
-			courseClass:[
+			courseClass: [
 				{
-					class:"教学一班",
-					teacher:"测试教师",
-					classroom:"教室",
-					chosen:90,//已选人数
-					volume:95//容量
+					class: "教学一班",
+					teacher: "测试教师",
+					classroom: "教室",
+					chosen: 90,//已选人数
+					volume: 95,//容量
+					course_code: "GK_JK_001"
 				},
 				{
-					class:"教学2班",
-					teacher:"测试教师",
-					classroom:"教室",
-					chosen:90,//已选人数
-					volume:95//容量
+					class: "教学2班",
+					teacher: "测试教师",
+					classroom: "教室",
+					chosen: 90,//已选人数
+					volume: 95,//容量
+					course_code: "GK_JK_002"
 				}
-			]
+			],
+			//展示在前台的教学班
+			showCourseClass:[]
 
 		}
 	},
 	onLoad() {
+		this.searchAllCourse();//加载全部课程
+	},
+	computed:{
 
+		/**根据课程代码筛选教学班 */
+		siftClass(code)
+		{
+			return this.courseClass.filter((item)=>{
+				return item.course_code === code;
+			})
+		}
 	},
 	methods: {
 		/**点击按钮弹出弹出层 */
@@ -201,18 +220,39 @@ export default {
 
 		},
 		/**查询 */
-		searchCourse()
-		{
-			var yearValue = this.queryCondition.year;//年份
+		searchCourse() {
 			var collegeValue = this.queryCondition.collegeValue; //学院
 			var subjectValue = this.queryCondition.subject; //专业
+			var courseTypeValue = this.queryCondition.courseType;//课程类别
 
-			       
+
+			var searchValue = this.searchValue;//搜索值
+
+			
+
 
 			//关闭弹出层
 			this.$refs.popup.close();
 
-		}
+		},
+
+		/**查询全部课程 */
+		searchAllCourse() {
+			let that = this;
+			this.$courseRequest({
+				url: "/course/page",
+				method: "GET"
+			}).then(res => {
+				that.course = res.data.data.records;
+				that.showCourse = res.data.data.records;
+				console.log(that.course);
+			}).catch(err => {
+				console.log(err);
+			})
+		},
+
+		
+
 	}
 }
 </script>
@@ -240,8 +280,8 @@ export default {
 	height: 35px;
 	margin: 0 5px;
 	border-radius: 5px;
-	display: flex;  
-	align-items: center;  
+	display: flex;
+	align-items: center;
 	justify-content: center;
 	padding: 0 0;
 }
@@ -267,32 +307,35 @@ export default {
 	{
 	width: 250px;
 }
+
 /**选课按钮样式 */
-.choose
-{
+.choose {
 	color: #fff;
-  	margin: 0 5px;
+	margin: 0 5px;
 	border-radius: 5px;
 	background-color: #075cef;
-	display: flex;  
-	align-items: center;  
+	display: flex;
+	align-items: center;
 	justify-content: center;
 	padding: 0 15rpx;
 }
+
 /**课程列表view */
-.course_box
-{
+.course_box {
 	margin-top: 5rpx;
 }
-.flex_box/**flex样式 */
-{
-  display: flex;
-  flex-direction: row;
+
+.flex_box
+
+/**flex样式 */
+	{
+	display: flex;
+	flex-direction: row;
 }
-.table_box
-{
-  display: flex;
-  flex-direction: column;
-  margin-left: 10rpx;
+
+.table_box {
+	display: flex;
+	flex-direction: column;
+	margin-left: 10rpx;
 }
 </style>

@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:8080'
+const baseURL = 'http://localhost:8080'//基础url
 
 export const courseRequest = (options) =>{
     //加载loading
