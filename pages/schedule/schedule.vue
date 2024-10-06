@@ -24,7 +24,7 @@
                   weekButton:true,//开启上一周下一周按钮
                   startdDate:'', //开始时间  默认为当前时间
                   timetables: [
-                    ['大学英语', '大学英语', '大学英语', '', '', '', '毛概', '毛概',],
+                    ['', '', '', '', '', '', '', '',],
                     ['', '', '信号与系统', '信号与系统', '模拟电子技术基础', '模拟电子技术基础', '模拟电子技术基础', '模拟电子技术基', '', '', '', '信号与系'],
                     ['大学体育', '大学体育', '形势与政策', '形势与政策', '', '', '', '', ''],
                     ['', '', '', '', '电装实习', '电装实习', '', '', ''],
@@ -34,16 +34,32 @@
                      { index: '1', name: '08:00\n08:40' },
                      { index: '2', name: '08:50\n09:30' },
                      { index: '3', name: '09:40\n10:20' },
-                     { index: '4', name: '10:30\n11:10' },
-                     { index: '5', name: '11:20\n12:00' },
+                     { index: '4', name: '10:30\n11:15' },
+                     { index: '5', name: '11:25\n12:10' },
                      { index: '6', name: '14:00\n14:40' },
-                     { index: '7', name: '15:50\n16:30' },
-                     { index: '8', name: '16:40\n17:20' },
-                     { index: '9', name: '17:30\n18:10' },
-                     { index: '10', name: '19:00\n19:40'},
-                     { index: '11', name: '20:50\n21:30'},
-                     { index: '12', name: '21:40\n22:20'}]
+                     { index: '7', name: '14:50\n15:30' },
+                     { index: '8', name: '15:45\n16:20' },
+                     { index: '9', name: '16:30\n17:15' },
+                     { index: '10', name: '17:25\n18:10'},
+                     { index: '11', name: '19:00\n19:40'},
+                     { index: '12', name: '19:50\n20:30'},
+                     { index: '13', name: '20:40\n21:25'},],//上课时间表
+                courseList:[],//课程列表
+
+                weekData:[//日期
+                    {index: '1',name:"周一"},
+                    {index: '2',name:"周二"},
+                    {index: '3',name:"周三"},
+                    {index: '4',name:"周四"},
+                    {index: '5',name:"周五"},
+                    {index: '6',name:"周六"},
+                    {index: '7',name:"周日"},
+                ]
+
               }
+          },
+          onLoad(options) {
+            this.getStudentSchedule();
           },
           methods:{
               courseClick(re){
@@ -61,6 +77,94 @@
               weekSelectClick(e){
                   console.log("您选择了",e)
               },
+
+              /**获取学生选的课程 */
+              getStudentSchedule()
+              {
+
+                let that = this;
+
+                this.$courseRequest({
+                    url:"/learning-lesson",
+                    method:"GET",
+                    data:{studentNumber:"202122450635"}
+                }).then(res=>{
+                    that.courseList = res.data.data;
+                    console.log(that.courseList);
+
+                    /**将课程时间抽离出来 */
+                    let courseStartTime = '';//课程开始时间
+                    let courseEndTime = '';//课程结束时间
+                    let courseDay = '';//课程日期
+                    that.courseList.forEach((item,index) => {
+                        console.log(item.classTime);
+
+                        //1.提取课程开始时间和结束时间
+                        courseStartTime = item.classTime.substring(3,8);
+                        courseEndTime = item.classTime.substring(9,14);
+                        courseDay = item.classTime.substring(0,2);
+
+                        //2.根据开始时间和结束时间算出是第几节课
+                        let startNum = that.includeStartTime(courseStartTime);
+                        let endNum = that.includeEndTime(courseEndTime);
+                        let dayNum = that.includeWeekData(courseDay);
+
+                        //3.将课程存入数组中
+                        that.timetables[dayNum-1].splice(startNum-1,endNum-1,item.courseCode);
+                        console.log(that.timetables);
+
+                        
+                    });
+
+
+                }).catch(err=>{
+                    console.log(err);
+                })
+              },
+
+              //匹配开始上课时间
+              includeStartTime(courseStartTime)
+              {
+                let num = '';
+                this.timetableType.forEach(item=>{
+
+                    if(item.name.includes(courseStartTime))
+                    {
+                        num = item.index;
+                    }
+
+                })
+                return num;
+              },
+
+              //匹配上课结束时间
+              includeEndTime(courseEndTime)
+              {
+                let num = '';
+                this.timetableType.forEach(item=>{
+
+                    if(item.name.includes(courseEndTime))
+                    {
+                        num = item.index;
+                    }
+            
+                })
+                return num;
+              },
+
+              //匹配上课是周几
+              includeWeekData(courseDay)
+              {
+                let num = '';
+                this.weekData.forEach(item=>{
+                    if(item.name.includes(courseDay))
+                    {
+                        num = item.index;
+                    }
+                })
+                return num;
+              },
+              
 
       },
   }

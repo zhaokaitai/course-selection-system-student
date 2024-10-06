@@ -420,6 +420,9 @@ var _default = {
       }).catch(function (err) {
         console.log(err);
       });
+    },
+    /**选课 */selectCourse: function selectCourse() {
+      console.log("选课");
     }
   }
 };

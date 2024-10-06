@@ -8764,9 +8764,13 @@ var _default = {
       "text": "个人课表"
     }, {
       "pagePath": "pages/chosenCourse/chosenCourse",
+      "iconPath": "/static/tabBar/chooseCourse.png",
+      "selectedIconPath": "/static/tabBar/select_chooseCourse.png",
       "text": "已选课程"
     }, {
       "pagePath": "pages/my/my",
+      "iconPath": "/static/tabBar/my.png",
+      "selectedIconPath": "/static/tabBar/select_my.png",
       "text": "个人中心"
     }]
   },

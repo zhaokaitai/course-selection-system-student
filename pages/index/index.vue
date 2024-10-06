@@ -27,7 +27,7 @@
 							<uni-td>{{ item1.classroom }}</uni-td>
 							<uni-td>{{ item1.chosen }}/{{ item1.volume }}</uni-td>
 							<uni-td>
-								<button class="choose" @click=""><text class="button_text">选课</text></button>
+								<button class="choose" @click="selectCourse()"><text class="button_text">选课</text></button>
 							</uni-td>
 						</uni-tr>
 					</uni-table>
@@ -250,6 +250,12 @@ export default {
 				console.log(err);
 			})
 		},
+
+		/**选课 */
+		selectCourse()
+		{
+			console.log("选课");
+		}
 
 		
 
