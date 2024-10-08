@@ -203,11 +203,31 @@ exports.default = void 0;
 //
 //
 //
+//
 var _default = {
   data: function data() {
-    return {};
+    return {
+      userName: "",
+      //学生名称
+      studentNumber: "" //学生学号
+    };
   },
-  onLoad: function onLoad(options) {},
+  onLoad: function onLoad(options) {
+    var _this = this;
+    //接收存储的登陆数据
+    uni.getStorage({
+      key: 'studentNumber',
+      success: function success(res) {
+        _this.studentNumber = res.data;
+      }
+    });
+    uni.getStorage({
+      key: 'userName',
+      success: function success(res) {
+        _this.userName = res.data;
+      }
+    });
+  },
   methods: {
     /**登出 */logout: function logout() {
       this.$courseRequest({

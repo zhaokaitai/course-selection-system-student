@@ -411,12 +411,12 @@ var _default = {
     /**查询全部课程 */searchAllCourse: function searchAllCourse() {
       var that = this;
       this.$courseRequest({
-        url: "/course/page",
+        url: "/course/list",
         method: "GET"
       }).then(function (res) {
-        that.course = res.data.data.records;
-        that.showCourse = res.data.data.records;
+        that.course = res.data.data;
         console.log(that.course);
+        that.showCourse = res.data.data;
       }).catch(function (err) {
         console.log(err);
       });

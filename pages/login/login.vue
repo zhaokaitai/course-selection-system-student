@@ -90,6 +90,20 @@ export default {
       }).then(res =>{
         console.log(res);
 
+        //存储登录信息
+        uni.setStorage({
+          key: 'studentNumber',
+          data: studentNumber,
+          success: (result) => {},
+          fail: (error) => {}
+        });
+        uni.setStorage({
+          key: 'userName',
+          data: 'studentNumber',
+          success: (result) => {},
+          fail: (error) => {}
+        })
+
         //跳转主页
         uni.switchTab({
           url:'/pages/index/index',

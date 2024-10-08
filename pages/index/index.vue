@@ -4,14 +4,14 @@
 
 		<!--查看查询条件的按钮-->
 		<view class="button_box">
-			<button class="query_button" @click="toggle('left')"><text class="button_text">选择筛选条件</text></button>
+			<button class="query_button" @click="toggle('left')"><text class="button_text">选择课程的筛选条件</text></button>
 		</view>
 
 		<!--课程展示-->
 		<view class="course_box"><!--后面使用循环-->
 			<!--使用uni-ui的折叠组件，折叠详情-->
 			<uni-collapse v-for="(item, index) in showCourse" :key="index">
-				<uni-collapse-item :title="item.name">
+				<uni-collapse-item :title="item.course.name">
 					<!--课程详细信息和选课按钮-->
 					<uni-table>
 						<uni-tr>
@@ -21,11 +21,11 @@
 							<uni-th width="30" align="center">已选/容量</uni-th>
 							<uni-th width="30" align="center">操作</uni-th>
 						</uni-tr>
-						<uni-tr v-for="(item1, index1) in courseClass" v-if="item1.course_code === item.courseCode" :key="index1">
-							<uni-td>{{ item1.class }}</uni-td>
+						<uni-tr v-for="(item1, index1) in item.teachingClassesList" :key="index1">
+							<uni-td>{{ item1.className }}</uni-td>
 							<uni-td>{{ item1.teacher }}</uni-td>
 							<uni-td>{{ item1.classroom }}</uni-td>
-							<uni-td>{{ item1.chosen }}/{{ item1.volume }}</uni-td>
+							<uni-td>{{ item1.selectedNum }}/{{ item1.capacity }}</uni-td>
 							<uni-td>
 								<button class="choose" @click="selectCourse()"><text class="button_text">选课</text></button>
 							</uni-td>
@@ -240,12 +240,12 @@ export default {
 		searchAllCourse() {
 			let that = this;
 			this.$courseRequest({
-				url: "/course/page",
+				url: "/course/list",
 				method: "GET"
 			}).then(res => {
-				that.course = res.data.data.records;
-				that.showCourse = res.data.data.records;
+				that.course = res.data.data;
 				console.log(that.course);
+				that.showCourse = res.data.data;
 			}).catch(err => {
 				console.log(err);
 			})

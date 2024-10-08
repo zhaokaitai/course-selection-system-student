@@ -22,6 +22,7 @@
     <!-- 其它 -->
     <view class="extra">
       <uni-list>
+        <uni-list-item showArrow title="个人信息"></uni-list-item>
         <uni-list-item showArrow title="联系客服"></uni-list-item>
         <uni-list-item showArrow title="关于我们"></uni-list-item>
       </uni-list>
@@ -39,12 +40,24 @@ export default {
   data()
   {
     return{
-
+      userName:"",//学生名称
+      studentNumber:""//学生学号
     }
   },
   onLoad(options) 
   {
-
+    //接收存储的登陆数据
+    uni.getStorage({
+      key:'studentNumber',
+      success:(res)=>{
+        
+        this.studentNumber = res.data
+      },
+    });
+    uni.getStorage({
+      key:'userName',
+      success:(res)=>{this.userName = res.data},
+    })
   },
   methods:{
     /**登出 */

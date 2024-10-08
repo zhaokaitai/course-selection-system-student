@@ -236,6 +236,20 @@ var _default = {
       }).then(function (res) {
         console.log(res);
 
+        //存储登录信息
+        uni.setStorage({
+          key: 'studentNumber',
+          data: studentNumber,
+          success: function success(result) {},
+          fail: function fail(error) {}
+        });
+        uni.setStorage({
+          key: 'userName',
+          data: 'studentNumber',
+          success: function success(result) {},
+          fail: function fail(error) {}
+        });
+
         //跳转主页
         uni.switchTab({
           url: '/pages/index/index'
