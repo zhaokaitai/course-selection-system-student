@@ -44,6 +44,13 @@
         "navigationBarTitleText": "",
         "enablePullDownRefresh": false
       }
+    },
+    {
+      "path": "pages/Info/Info",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
     }
   ],
   "globalStyle": {
@@ -72,15 +79,14 @@
       },
       {
         "pagePath": "pages/chosenCourse/chosenCourse",
-        "iconPath":"/static/tabBar/chooseCourse.png",
-        "selectedIconPath":"/static/tabBar/select_chooseCourse.png",
+        "iconPath": "/static/tabBar/chooseCourse.png",
+        "selectedIconPath": "/static/tabBar/select_chooseCourse.png",
         "text": "已选课程"
-        
       },
       {
         "pagePath": "pages/my/my",
-        "iconPath":"/static/tabBar/my.png",
-        "selectedIconPath":"/static/tabBar/select_my.png",
+        "iconPath": "/static/tabBar/my.png",
+        "selectedIconPath": "/static/tabBar/select_my.png",
         "text": "个人中心"
       }
     ]

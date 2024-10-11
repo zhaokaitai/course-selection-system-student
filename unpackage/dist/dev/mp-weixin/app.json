@@ -6,7 +6,8 @@
     "pages/schedule/schedule",
     "pages/my/my",
     "pages/chosenCourse/chosenCourse",
-    "pages/courseDetail/courseDetail"
+    "pages/courseDetail/courseDetail",
+    "pages/Info/Info"
   ],
   "subPackages": [],
   "window": {

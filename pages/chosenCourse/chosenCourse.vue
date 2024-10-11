@@ -11,12 +11,13 @@
           <uni-th width="30" align="center">已选/容量</uni-th>
           <uni-th width="30" align="center">操作</uni-th>
         </uni-tr>
-        <uni-tr v-for="(item, index) in courseClass" :key="index">
-          <uni-td>{{ item.class }}</uni-td>
-          <uni-td>{{ item.teacher }}</uni-td>
+        <uni-tr v-for="(item, index) in courseList" :key="index">
+          <uni-td>{{ item.className }}</uni-td>
+          <uni-td><text>{{ computedTeacherName(item.teacherId) }}</text></uni-td>
           <uni-td>{{ item.classroom }}</uni-td>
-          <uni-td>{{ item.chosen }}/{{ item.volume }}</uni-td>
-          <uni-td><button class="choose" @click=""><text class="button_text">选课</text></button></uni-td>
+          <uni-td>{{ item.selectedNum }}/{{ item.capacity }}</uni-td>
+          <uni-td><button class="exit" @click="dropCourse(item.classId)" type="warn"><text
+                class="button_text">退课</text></button></uni-td>
         </uni-tr>
       </uni-table>
     </view>
@@ -27,8 +28,103 @@
 export default {
   data() {
     return {
-
+      courseList: [],//已选课程列表
+      studentNumber:""//学号
     };
+  },
+  onLoad(options) {
+    //接收存储的登陆数据
+    uni.getStorage({
+      key:'studentNumber',
+      success:(res)=>{
+        
+        this.studentNumber = res.data
+      },
+    });
+    this.getStudentSchedule();
+  },
+  computed: {
+    //计算教师名称
+    computedTeacherName() 
+    {
+      return async (id)=>{
+        let name = await this.getTeacherId(id);
+        return name;
+      }
+    }
+  },
+  methods: {
+    /**获取所有已选择的课程
+     * 
+     */
+    getStudentSchedule() {
+
+      let that = this;
+
+      this.$courseRequest({
+        url: "/learning-lesson",
+        method: "GET",
+        data: { studentNumber: "202122450635" }
+      }).then(res => {
+        that.courseList = res.data.data;
+        console.log(that.courseList);
+      }).catch(err => {
+        console.log(err);
+      })
+    },
+
+    /**退课 */
+    dropCourse(id) 
+    {
+      let that = this;
+			console.log("退课");
+
+      //后端退课接口
+      this.$courseRequest({
+        url:"/course/drop-course",
+        method:"POST",
+        data:
+        {
+          classId:id,
+          studentNumber:"202122450635"//写死
+        }
+      }).then(res=>{
+        console.log(res);
+        //从列表中删除该课程
+        let dropIndex = that.courseList.findIndex(item =>{
+          if(item.id === id)
+          {
+            return true;
+          }
+        });
+        that.courseList.splice(dropIndex,1);
+
+        //提示退课成功
+        uni.showToast({
+          title:'退课成功!',
+          icon:'success',
+          mask:true
+        })
+
+      })
+
+    },
+
+    //获取teacher名称
+    async getTeacherId(id) {
+
+      let name = "11"
+
+      await this.$courseRequest({
+        url: "/teacher/" + id,
+        method: "GET",
+      }).then(res => {
+        name = res.data.teacherName;  
+      });
+      return name;
+
+    }
+
   }
 }
 </script>
@@ -56,13 +152,14 @@ export default {
 
 /**退课按钮样式 */
   {
-  color: #fff;
-  margin: 0 5px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 15rpx;
+    color: #fff;
+	margin: 0 5px;
+	border-radius: 5px;
+	background-color: #075cef;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 15rpx;
 }
 
 .button_text

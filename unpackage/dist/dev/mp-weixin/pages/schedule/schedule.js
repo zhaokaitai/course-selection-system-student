@@ -99,7 +99,7 @@ var components
 try {
   components = {
     lyCurriculumtable: function () {
-      return __webpack_require__.e(/*! import() | components/ly-curriculumtable/ly-curriculumtable */ "components/ly-curriculumtable/ly-curriculumtable").then(__webpack_require__.bind(null, /*! @/components/ly-curriculumtable/ly-curriculumtable.vue */ 175))
+      return __webpack_require__.e(/*! import() | components/ly-curriculumtable/ly-curriculumtable */ "components/ly-curriculumtable/ly-curriculumtable").then(__webpack_require__.bind(null, /*! @/components/ly-curriculumtable/ly-curriculumtable.vue */ 181))
     },
   }
 } catch (e) {
@@ -164,7 +164,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var Timetable = function Timetable() {
   __webpack_require__.e(/*! require.ensure | components/ly-curriculumtable/ly-curriculumtable */ "components/ly-curriculumtable/ly-curriculumtable").then((function () {
-    return resolve(__webpack_require__(/*! ../../components/ly-curriculumtable/ly-curriculumtable.vue */ 175));
+    return resolve(__webpack_require__(/*! ../../components/ly-curriculumtable/ly-curriculumtable.vue */ 181));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var _default = {
@@ -181,7 +181,7 @@ var _default = {
       //开启上一周下一周按钮
       startdDate: '',
       //开始时间  默认为当前时间
-      timetables: [['', '', '', '', '', '', '', ''], ['', '', '信号与系统', '信号与系统', '模拟电子技术基础', '模拟电子技术基础', '模拟电子技术基础', '模拟电子技术基', '', '', '', '信号与系'], ['大学体育', '大学体育', '形势与政策', '形势与政策', '', '', '', '', ''], ['', '', '', '', '电装实习', '电装实习', '', '', ''], ['', '', '数据结构与算法分析数据结构与算法分析', '数据结构与算法分析数据结构与算法分析', '', '', '', '', '信号与系']],
+      timetables: [['', '', '', '', '', '', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', '', '', '', '', '', ''], ['', '', '', '', '', '', '', '', '', '', '', '', '']],
       timetableType: [{
         index: '1',
         name: '08:00\n08:40'

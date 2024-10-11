@@ -16,18 +16,20 @@
 					<uni-table>
 						<uni-tr>
 							<uni-th width="30" align="center">教学班</uni-th>
-							<uni-th width="30" align="center">上课教师</uni-th>
+							<uni-th width="30" align="center">教学班id</uni-th>
+							<uni-th width="30" align="center">上课时间</uni-th>
 							<uni-th width="30" align="center">上课地点</uni-th>
 							<uni-th width="30" align="center">已选/容量</uni-th>
 							<uni-th width="30" align="center">操作</uni-th>
 						</uni-tr>
 						<uni-tr v-for="(item1, index1) in item.teachingClassesList" :key="index1">
 							<uni-td>{{ item1.className }}</uni-td>
+							<uni-td>{{ item1.id }}</uni-td>
 							<uni-td>{{ item1.teacher }}</uni-td>
 							<uni-td>{{ item1.classroom }}</uni-td>
 							<uni-td>{{ item1.selectedNum }}/{{ item1.capacity }}</uni-td>
 							<uni-td>
-								<button class="choose" @click="selectCourse()"><text class="button_text">选课</text></button>
+								<button class="choose" @click="selectCourse(item1.id)"><text class="button_text">选课</text></button>
 							</uni-td>
 						</uni-tr>
 					</uni-table>
@@ -74,6 +76,7 @@
 export default {
 	data() {
 		return {
+			studentNumber:"",//学号
 			searchValue: "",//搜索框输入的值
 			type: "",//弹出层参数
 			queryCondition://查询条件
@@ -174,6 +177,13 @@ export default {
 		}
 	},
 	onLoad() {
+		//接收存储的登陆数据
+		uni.getStorage({
+      			key:'studentNumber',
+      			success:(res)=>{
+        			this.studentNumber = res.data
+      			},
+    	});
 		this.searchAllCourse();//加载全部课程
 	},
 	computed:{
@@ -221,9 +231,7 @@ export default {
 		},
 		/**查询 */
 		searchCourse() {
-			var collegeValue = this.queryCondition.collegeValue; //学院
-			var subjectValue = this.queryCondition.subject; //专业
-			var courseTypeValue = this.queryCondition.courseType;//课程类别
+			
 
 
 			var searchValue = this.searchValue;//搜索值
@@ -252,9 +260,38 @@ export default {
 		},
 
 		/**选课 */
-		selectCourse()
+		selectCourse(id)
 		{
+			let that = this;
 			console.log("选课");
+			
+			//后端选课接口
+			this.$courseRequest({
+				url:"/course/choose-course",
+				method:"POST",
+				data:
+				{
+					classId:id,
+					studentNumber:that.studentNumber
+				}
+			}).then(res=>{
+				console.log(res);
+				
+				/**提示选课成功 */
+				uni.showToast({
+					title: '选课成功！',
+					icon: 'success',
+					mask: true
+				})
+			}).catch(err=>{
+				console.log(err);
+				uni.showToast({
+					title:'选课失败！',
+					icon:'fail',
+					mask:true
+				})
+			})
+
 		}
 
 		
