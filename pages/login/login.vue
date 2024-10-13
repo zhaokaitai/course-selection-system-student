@@ -43,7 +43,7 @@
             <text class="txt">验证码</text>
             <view class="flex-code">
               <input name="code" placeholder="请输入您的验证码" v-model="code" class="input-code"/>
-              <c-codeButton></c-codeButton>
+              <c-codeButton :phoneNum="phone"></c-codeButton>
             </view>
           </view>
 
@@ -105,12 +105,6 @@ export default {
           success: (result) => {},
           fail: (error) => {}
         });
-        uni.setStorage({
-          key: 'userName',
-          data: 'studentNumber',
-          success: (result) => {},
-          fail: (error) => {}
-        })
 
         //跳转主页
         uni.switchTab({
@@ -132,6 +126,49 @@ export default {
     //验证码登录
     codeLogin() {
       console.log("验证码登录");
+
+      let phone = this.phone;
+      let smsCode = this.code;
+
+      this.$courseRequest({
+        url:'/student/loginByPhone',
+        method:'POST',
+        data:
+        {
+          phone:phone,
+          smsCode:smsCode
+        }
+      }).then(res=>{
+        console.log(res);
+        let studentNumber = that.getStudentNumberByPhone(phone);
+        //存储登录信息
+        uni.setStorage({
+          key: 'studentNumber',
+          data: studentNumber,
+          success: (result) => {},
+          fail: (error) => {}
+        });
+        //跳转主页
+        uni.switchTab({
+          url:'/pages/index/index',
+        })
+      })
+
+    },
+
+    //根据电话获取学号
+    async getStudentNumberByPhone(phone)
+    {
+      let studentNumber = "";
+
+      await this.$courseRequest({
+        url:'/student/'+phone,
+        method:'GET'
+      }).then(res =>{
+        console.log(res);
+      })
+
+      return studentNumber;
     }
   }
 };

@@ -21,7 +21,7 @@
 						<text class="txt">验证码</text>
 						<view class="wrap">
 							<input name="code" placeholder="请输入您的验证码" v-model="code" />
-							<button>发送验证码</button>
+							<c-codeButton :phoneNum="phone"></c-codeButton>
 						</view>
 					</view>
 
@@ -35,7 +35,7 @@
 						<input type="password" name="password" maxlength="18" placeholder="请输入您的密码"
 							v-model="rePassword" />
 					</view>
-					<button @click="handleLogin()">确 认</button>
+					<button @click="changePassword()">确 认</button>
 				</form>
 			</view>
 		</view>
@@ -43,7 +43,11 @@
 </template>
 
 <script>
+import CCodeButton from '../../components/c-codeButton/c-codeButton.vue';
 export default {
+	components:{
+		CCodeButton
+	},
 	data() {
 		return {
 			phone: "", //密保手机号
@@ -52,6 +56,28 @@ export default {
 			rePassword: "", //重复密码
 		};
 	},
+	methods:{
+		//改密码
+		changePassword()
+		{
+			let that = this;
+
+			this.$courseRequest({
+				url:'/student/resetPassword',
+				method:'POST',
+				data:
+				{
+					phone:that.phone,
+					smsCode:that.code,
+					password:that.password,
+					passwordTwo:that.newPassword
+				}
+			}).then(res=>{
+				console.log(res);
+			})
+
+		}
+	}
 };
 </script>
 

@@ -8,6 +8,20 @@
     "miniprogram": {
       "list": [
         {
+          "name": "pages/my/my",
+          "pathName": "pages/my/my",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/rePassword/rePassword",
+          "pathName": "pages/rePassword/rePassword",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "pages/courseDetail/courseDetail",
           "pathName": "pages/courseDetail/courseDetail",
           "query": "",

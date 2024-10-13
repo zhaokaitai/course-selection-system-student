@@ -80,13 +80,13 @@ var components
 try {
   components = {
     uniIcons: function () {
-      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 209))
+      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 195))
     },
     uniPopup: function () {
       return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 147))
     },
     lyDataCheckbox: function () {
-      return Promise.all(/*! import() | components/ly-data-checkbox/ly-data-checkbox */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/ly-data-checkbox/ly-data-checkbox")]).then(__webpack_require__.bind(null, /*! @/components/ly-data-checkbox/ly-data-checkbox.vue */ 241))
+      return Promise.all(/*! import() | components/ly-data-checkbox/ly-data-checkbox */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/ly-data-checkbox/ly-data-checkbox")]).then(__webpack_require__.bind(null, /*! @/components/ly-data-checkbox/ly-data-checkbox.vue */ 227))
     },
   }
 } catch (e) {
