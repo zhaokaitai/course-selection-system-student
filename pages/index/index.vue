@@ -25,7 +25,7 @@
 						<uni-tr v-for="(item1, index1) in item.teachingClassesList" :key="index1">
 							<uni-td>{{ item1.className }}</uni-td>
 							<uni-td>{{ item1.id }}</uni-td>
-							<uni-td>{{ item1.teacher }}</uni-td>
+							<uni-td>{{ item1.classTime }}</uni-td>
 							<uni-td>{{ item1.classroom }}</uni-td>
 							<uni-td>{{ item1.selectedNum }}/{{ item1.capacity }}</uni-td>
 							<uni-td>
@@ -64,6 +64,7 @@
 					<uni-data-checkbox v-model="queryCondition.subject" :localdata="collegeSubject" />
 				</view>
 
+				
 
 			</uni-popup>
 		</view>
@@ -122,12 +123,12 @@ export default {
 			courseCollege: [
 				{
 					text: "管理科学与信息工程学院",
-					value: "管理科学与信息工程学院",
+					value: 1,
 					cValue: 1
 				},
 				{
 					text: "旅游学院",
-					value: "旅游学院",
+					value: 2,
 					cValue: 2
 				}
 			],
@@ -230,14 +231,29 @@ export default {
 
 		},
 		/**查询 */
-		searchCourse() {
+		async searchCourse() {
 			
+			var searchCollege = this.queryCondition.college;
+			var searchSubject = this.queryCondition.subject;
 
 
 			var searchValue = this.searchValue;//搜索值
 
+			//查询
+			let queryCourse = "";
+			if(searchCollege)
+			{
+				queryCourse = this.course.filter(item => item.course.collegeId === 1);
+			}
+			if(searchValue)
+			{
+				queryCourse = queryCourse.filter(item =>item.course.name.includes(searchValue));
+			}
+		
 			
 
+			
+			this.showCourse = queryCourse;
 
 			//关闭弹出层
 			this.$refs.popup.close();
@@ -291,6 +307,40 @@ export default {
 					mask:true
 				})
 			})
+
+		},
+
+		//根据学院id拿到学院名称
+		async getCollegeById(id)
+		{
+			let temp = "";
+
+			await this.$courseRequest({
+				url:'/college/'+id,
+				method:'GET'
+			}).then(res=>{
+				console.log(res);
+				temp = res.data.collegeName;
+			})
+			
+			return temp;
+
+
+		},
+
+		//根据专业id拿到专业名称
+		async getMajorById(id)
+		{
+			let temp = "";
+
+			await this.$courseRequest({
+				url:'/major/'+id,
+				method:'GET'
+			}).then(res=>{
+				temp = res.data.majorName;
+			});
+
+			return temp;
 
 		}
 

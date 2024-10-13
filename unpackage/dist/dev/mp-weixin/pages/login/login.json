@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "login",
-  "usingComponents": {}
+  "usingComponents": {
+    "c-code-button": "/components/c-codeButton/c-codeButton"
+  }
 }

@@ -1,0 +1,1 @@
+<view class="yanzhengcode data-v-7e8fafb8" disabled="{{BtnSms}}" data-event-opts="{{[['tap',[['getPhoneCode']]]]}}" bindtap="__e">{{smsTip}}</view>

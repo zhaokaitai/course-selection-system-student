@@ -41,7 +41,10 @@
 
           <view class="t-a">
             <text class="txt">验证码</text>
-            <input name="code" placeholder="请输入您的验证码" v-model="code" />
+            <view class="flex-code">
+              <input name="code" placeholder="请输入您的验证码" v-model="code" class="input-code"/>
+              <c-codeButton></c-codeButton>
+            </view>
           </view>
 
           <button @click="codeLogin()">登 录</button>
@@ -55,7 +58,12 @@
 </template>
 
 <script>
+import CCodeButton from '../../components/c-codeButton/c-codeButton.vue';
+
 export default {
+  components:{
+    CCodeButton
+  },
   data() {
     return {
       studentNumber: "", //学号
@@ -223,5 +231,4 @@ export default {
 .t-login .t-a {
 	position: relative;
 }
-
 </style>
