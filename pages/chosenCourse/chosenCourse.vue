@@ -6,14 +6,12 @@
       <uni-table>
         <uni-tr>
           <uni-th width="30" align="center">教学班</uni-th>
-          <uni-th width="30" align="center">上课教师</uni-th>
           <uni-th width="30" align="center">上课地点</uni-th>
           <uni-th width="30" align="center">已选/容量</uni-th>
           <uni-th width="30" align="center">操作</uni-th>
         </uni-tr>
         <uni-tr v-for="(item, index) in courseList" :key="index">
           <uni-td>{{ item.className }}</uni-td>
-          <uni-td><text>{{ computedTeacherName(item.teacherId) }}</text></uni-td>
           <uni-td>{{ item.classroom }}</uni-td>
           <uni-td>{{ item.selectedNum }}/{{ item.capacity }}</uni-td>
           <uni-td><button class="exit" @click="dropCourse(item.classId)" type="warn"><text
@@ -33,6 +31,18 @@ export default {
     };
   },
   onLoad(options) {
+    //接收存储的登陆数据
+    uni.getStorage({
+      key:'studentNumber',
+      success:(res)=>{
+        
+        this.studentNumber = res.data
+      },
+    });
+    this.getStudentSchedule();
+  },
+  onShow()
+  {
     //接收存储的登陆数据
     uni.getStorage({
       key:'studentNumber',

@@ -134,22 +134,6 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l0 = _vm.__map(_vm.courseList, function (item, index) {
-    var $orig = _vm.__get_orig(item)
-    var m0 = _vm.computedTeacherName(item.teacherId)
-    return {
-      $orig: $orig,
-      m0: m0,
-    }
-  })
-  _vm.$mp.data = Object.assign(
-    {},
-    {
-      $root: {
-        l0: l0,
-      },
-    }
-  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -216,8 +200,6 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/r
 //
 //
 //
-//
-//
 var _default = {
   data: function data() {
     return {
@@ -237,10 +219,21 @@ var _default = {
     });
     this.getStudentSchedule();
   },
+  onShow: function onShow() {
+    var _this2 = this;
+    //接收存储的登陆数据
+    uni.getStorage({
+      key: 'studentNumber',
+      success: function success(res) {
+        _this2.studentNumber = res.data;
+      }
+    });
+    this.getStudentSchedule();
+  },
   computed: {
     //计算教师名称
     computedTeacherName: function computedTeacherName() {
-      var _this2 = this;
+      var _this3 = this;
       return /*#__PURE__*/function () {
         var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(id) {
           var name;
@@ -249,7 +242,7 @@ var _default = {
               switch (_context.prev = _context.next) {
                 case 0:
                   _context.next = 2;
-                  return _this2.getTeacherId(id);
+                  return _this3.getTeacherId(id);
                 case 2:
                   name = _context.sent;
                   return _context.abrupt("return", name);
@@ -317,7 +310,7 @@ var _default = {
     },
     //获取teacher名称
     getTeacherId: function getTeacherId(id) {
-      var _this3 = this;
+      var _this4 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
         var name;
         return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -326,7 +319,7 @@ var _default = {
               case 0:
                 name = "11";
                 _context2.next = 3;
-                return _this3.$courseRequest({
+                return _this4.$courseRequest({
                   url: "/teacher/" + id,
                   method: "GET"
                 }).then(function (res) {

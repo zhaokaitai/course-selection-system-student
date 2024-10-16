@@ -269,6 +269,8 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/r
 //
 //
 //
+//
+//
 var _default = {
   data: function data() {
     return {
@@ -375,15 +377,27 @@ var _default = {
         _this.studentNumber = res.data;
       }
     });
-    this.searchAllCourse(); //加载全部课程
+    this.searchAllCourse();
+    this.getAllStudentCourse();
   },
-
+  onShow: function onShow() {
+    var _this2 = this;
+    //接收存储的登陆数据
+    uni.getStorage({
+      key: 'studentNumber',
+      success: function success(res) {
+        _this2.studentNumber = res.data;
+      }
+    });
+    this.searchAllCourse();
+    this.getAllStudentCourse();
+  },
   computed: {
     /**根据课程代码筛选教学班 */siftClass: function siftClass(code) {
       return this.courseClass.filter(function (item) {
         return item.course_code === code;
       });
-    }
+    } //计算
   },
   methods: {
     /**点击按钮弹出弹出层 */toggle: function toggle(type) {
@@ -415,20 +429,20 @@ var _default = {
       });
     },
     /**查询 */searchCourse: function searchCourse() {
-      var _this2 = this;
+      var _this3 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
         var searchCollege, searchSubject, searchValue, queryCourse;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                searchCollege = _this2.queryCondition.college;
-                searchSubject = _this2.queryCondition.subject;
-                searchValue = _this2.searchValue; //搜索值
+                searchCollege = _this3.queryCondition.college;
+                searchSubject = _this3.queryCondition.subject;
+                searchValue = _this3.searchValue; //搜索值
                 //查询
                 queryCourse = "";
                 if (searchCollege) {
-                  queryCourse = _this2.course.filter(function (item) {
+                  queryCourse = _this3.course.filter(function (item) {
                     return item.course.collegeId === 1;
                   });
                 }
@@ -437,10 +451,10 @@ var _default = {
                     return item.course.name.includes(searchValue);
                   });
                 }
-                _this2.showCourse = queryCourse;
+                _this3.showCourse = queryCourse;
 
                 //关闭弹出层
-                _this2.$refs.popup.close();
+                _this3.$refs.popup.close();
               case 8:
               case "end":
                 return _context.stop();
@@ -449,70 +463,32 @@ var _default = {
         }, _callee);
       }))();
     },
+    //
+    showAllCourse: function showAllCourse() {
+      this.searchAllCourse();
+      this.getAllStudentCourse(); //获取所有已选课程
+      console.log(this.showCourse);
+    },
     /**查询全部课程 */searchAllCourse: function searchAllCourse() {
-      var that = this;
-      this.$courseRequest({
-        url: "/course/list",
-        method: "GET"
-      }).then(function (res) {
-        that.course = res.data.data;
-        console.log(that.course);
-        that.showCourse = res.data.data;
-      }).catch(function (err) {
-        console.log(err);
-      });
-    },
-    /**选课 */selectCourse: function selectCourse(id) {
-      var that = this;
-      console.log("选课");
-
-      //后端选课接口
-      this.$courseRequest({
-        url: "/course/choose-course",
-        method: "POST",
-        data: {
-          classId: id,
-          studentNumber: that.studentNumber
-        }
-      }).then(function (res) {
-        console.log(res);
-
-        /**提示选课成功 */
-        uni.showToast({
-          title: '选课成功！',
-          icon: 'success',
-          mask: true
-        });
-      }).catch(function (err) {
-        console.log(err);
-        uni.showToast({
-          title: '选课失败！',
-          icon: 'fail',
-          mask: true
-        });
-      });
-    },
-    //根据学院id拿到学院名称
-    getCollegeById: function getCollegeById(id) {
-      var _this3 = this;
+      var _this4 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
-        var temp;
+        var that;
         return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                temp = "";
+                that = _this4;
                 _context2.next = 3;
-                return _this3.$courseRequest({
-                  url: '/college/' + id,
-                  method: 'GET'
+                return _this4.$courseRequest({
+                  url: "/course/list",
+                  method: "GET"
                 }).then(function (res) {
-                  console.log(res);
-                  temp = res.data.collegeName;
+                  that.course = res.data.data;
+                  that.showCourse = res.data.data;
+                }).catch(function (err) {
+                  console.log(err);
                 });
               case 3:
-                return _context2.abrupt("return", temp);
-              case 4:
               case "end":
                 return _context2.stop();
             }
@@ -520,9 +496,57 @@ var _default = {
         }, _callee2);
       }))();
     },
-    //根据专业id拿到专业名称
-    getMajorById: function getMajorById(id) {
-      var _this4 = this;
+    /**选课 */selectCourse: function selectCourse(code, index, id) {
+      var _this5 = this;
+      var that = this;
+      console.log("选课");
+      console.log(index);
+      if (this.showCourse[index].status === 1) {
+        uni.showToast({
+          title: '你选过了！',
+          icon: 'error',
+          mask: true
+        });
+      } else {
+        //后端选课接口
+        this.$courseRequest({
+          url: "/course/choose-course",
+          method: "POST",
+          data: {
+            classId: id,
+            studentNumber: that.studentNumber
+          }
+        }).then(function (res) {
+          console.log(res);
+
+          /**提示选课成功 */
+          uni.showToast({
+            title: '选课成功！',
+            icon: 'success',
+            mask: true
+          });
+          /**选课人数+1 */
+          console.log(id);
+          var changeIndex = that.showCourse.findIndex(function (item) {
+            if (item.course.courseCode === code) {
+              return true;
+            }
+          });
+          _this5.showCourse[changeIndex].teachingClassesList[index].selectedNum += 1;
+          _this5.showCourse[changeIndex].status = 1;
+        }).catch(function (err) {
+          console.log(err);
+          uni.showToast({
+            title: '选课失败！',
+            icon: 'fail',
+            mask: true
+          });
+        });
+      }
+    },
+    //根据学院id拿到学院名称
+    getCollegeById: function getCollegeById(id) {
+      var _this6 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
         var temp;
         return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -531,11 +555,12 @@ var _default = {
               case 0:
                 temp = "";
                 _context3.next = 3;
-                return _this4.$courseRequest({
-                  url: '/major/' + id,
+                return _this6.$courseRequest({
+                  url: '/college/' + id,
                   method: 'GET'
                 }).then(function (res) {
-                  temp = res.data.majorName;
+                  console.log(res);
+                  temp = res.data.collegeName;
                 });
               case 3:
                 return _context3.abrupt("return", temp);
@@ -545,6 +570,81 @@ var _default = {
             }
           }
         }, _callee3);
+      }))();
+    },
+    //根据专业id拿到专业名称
+    getMajorById: function getMajorById(id) {
+      var _this7 = this;
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4() {
+        var temp;
+        return _regenerator.default.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                temp = "";
+                _context4.next = 3;
+                return _this7.$courseRequest({
+                  url: '/major/' + id,
+                  method: 'GET'
+                }).then(function (res) {
+                  temp = res.data.majorName;
+                });
+              case 3:
+                return _context4.abrupt("return", temp);
+              case 4:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    //查看你是否选了这门课
+    getAllStudentCourse: function getAllStudentCourse() {
+      var _this8 = this;
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5() {
+        var that, classIdList, i, j;
+        return _regenerator.default.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _this8.showCourse.forEach(function (element) {
+                  element.status = 0;
+                });
+                that = _this8;
+                classIdList = [];
+                _context5.next = 5;
+                return _this8.$courseRequest({
+                  url: "/learning-lesson",
+                  method: "GET",
+                  data: {
+                    studentNumber: "202122450635"
+                  }
+                }).then(function (res) {
+                  classIdList = res.data.data;
+                });
+              case 5:
+                //赋值是否选课
+                for (i = that.showCourse.length - 1; i >= 0; i--) {
+                  that.showCourse[i].status = 0;
+                  console.log(that.showCourse);
+                  for (j = 0; j < classIdList.length; j++) {
+                    if (that.showCourse[i] && classIdList[j]) {
+                      if (that.showCourse[i].course.courseCode === classIdList[j].courseCode) {
+                        that.showCourse[i].status = 1;
+                      } else {
+                        that.showCourse[i].status = 0;
+                      }
+                    }
+                  }
+                }
+                console.log(_this8.showCourse);
+              case 7:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
       }))();
     }
   }

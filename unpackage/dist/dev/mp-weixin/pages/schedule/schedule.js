@@ -301,7 +301,7 @@ var _default = {
           var dayNum = that.includeWeekData(courseDay);
 
           //3.将课程存入数组中
-          that.timetables[dayNum - 1].splice(startNum - 1, endNum - 1, item.courseCode);
+          that.timetables[dayNum - 1].splice(startNum - 1, endNum - 1, item.className);
           console.log(that.timetables);
         });
       }).catch(function (err) {

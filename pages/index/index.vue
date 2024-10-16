@@ -16,7 +16,6 @@
 					<uni-table>
 						<uni-tr>
 							<uni-th width="30" align="center">教学班</uni-th>
-							<uni-th width="30" align="center">教学班id</uni-th>
 							<uni-th width="30" align="center">上课时间</uni-th>
 							<uni-th width="30" align="center">上课地点</uni-th>
 							<uni-th width="30" align="center">已选/容量</uni-th>
@@ -24,12 +23,15 @@
 						</uni-tr>
 						<uni-tr v-for="(item1, index1) in item.teachingClassesList" :key="index1">
 							<uni-td>{{ item1.className }}</uni-td>
-							<uni-td>{{ item1.id }}</uni-td>
 							<uni-td>{{ item1.classTime }}</uni-td>
 							<uni-td>{{ item1.classroom }}</uni-td>
 							<uni-td>{{ item1.selectedNum }}/{{ item1.capacity }}</uni-td>
 							<uni-td>
-								<button class="choose" @click="selectCourse(item1.id)"><text class="button_text">选课</text></button>
+								<button class="choose"
+									@click="selectCourse(item.course.courseCode, index, item1.id)"><text
+										class="button_text">选课</text></button>
+
+
 							</uni-td>
 						</uni-tr>
 					</uni-table>
@@ -64,7 +66,7 @@
 					<uni-data-checkbox v-model="queryCondition.subject" :localdata="collegeSubject" />
 				</view>
 
-				
+
 
 			</uni-popup>
 		</view>
@@ -77,7 +79,7 @@
 export default {
 	data() {
 		return {
-			studentNumber:"",//学号
+			studentNumber: "",//学号
 			searchValue: "",//搜索框输入的值
 			type: "",//弹出层参数
 			queryCondition://查询条件
@@ -91,7 +93,7 @@ export default {
 			//从后端获取的所有课程列表
 			course: [],
 			//展示在前台的课程列表
-			showCourse:[],
+			showCourse: [],
 			//年级单选框
 			courseYear: [
 				{
@@ -173,29 +175,43 @@ export default {
 				}
 			],
 			//展示在前台的教学班
-			showCourseClass:[]
+			showCourseClass: []
 
 		}
 	},
 	onLoad() {
 		//接收存储的登陆数据
 		uni.getStorage({
-      			key:'studentNumber',
-      			success:(res)=>{
-        			this.studentNumber = res.data
-      			},
-    	});
-		this.searchAllCourse();//加载全部课程
+			key: 'studentNumber',
+			success: (res) => {
+				this.studentNumber = res.data
+			},
+		});
+		this.searchAllCourse();
+		this.getAllStudentCourse();
 	},
-	computed:{
+	onShow() {
+		//接收存储的登陆数据
+		uni.getStorage({
+			key: 'studentNumber',
+			success: (res) => {
+				this.studentNumber = res.data
+			},
+		});
+		this.searchAllCourse();
+		this.getAllStudentCourse();
+	},
+	computed: {
 
 		/**根据课程代码筛选教学班 */
-		siftClass(code)
-		{
-			return this.courseClass.filter((item)=>{
+		siftClass(code) {
+			return this.courseClass.filter((item) => {
 				return item.course_code === code;
 			})
-		}
+		},
+
+		//计算
+
 	},
 	methods: {
 		/**点击按钮弹出弹出层 */
@@ -232,7 +248,7 @@ export default {
 		},
 		/**查询 */
 		async searchCourse() {
-			
+
 			var searchCollege = this.queryCondition.college;
 			var searchSubject = this.queryCondition.subject;
 
@@ -241,18 +257,16 @@ export default {
 
 			//查询
 			let queryCourse = "";
-			if(searchCollege)
-			{
+			if (searchCollege) {
 				queryCourse = this.course.filter(item => item.course.collegeId === 1);
 			}
-			if(searchValue)
-			{
-				queryCourse = queryCourse.filter(item =>item.course.name.includes(searchValue));
+			if (searchValue) {
+				queryCourse = queryCourse.filter(item => item.course.name.includes(searchValue));
 			}
-		
-			
 
-			
+
+
+
 			this.showCourse = queryCourse;
 
 			//关闭弹出层
@@ -260,91 +274,165 @@ export default {
 
 		},
 
+		//
+		showAllCourse() {
+			this.searchAllCourse();
+			this.getAllStudentCourse();//获取所有已选课程
+			console.log(this.showCourse);
+		},
+
 		/**查询全部课程 */
-		searchAllCourse() {
+		async searchAllCourse() {
 			let that = this;
-			this.$courseRequest({
+			
+			
+
+			await this.$courseRequest({
 				url: "/course/list",
 				method: "GET"
 			}).then(res => {
 				that.course = res.data.data;
-				console.log(that.course);
+
 				that.showCourse = res.data.data;
+
 			}).catch(err => {
 				console.log(err);
 			})
+
+
+			
+
 		},
 
 		/**选课 */
-		selectCourse(id)
-		{
+		selectCourse(code, index, id) {
 			let that = this;
 			console.log("选课");
-			
-			//后端选课接口
-			this.$courseRequest({
-				url:"/course/choose-course",
-				method:"POST",
-				data:
-				{
-					classId:id,
-					studentNumber:that.studentNumber
-				}
-			}).then(res=>{
-				console.log(res);
-				
-				/**提示选课成功 */
+			console.log(index);
+			if (this.showCourse[index].status === 1) {
 				uni.showToast({
-					title: '选课成功！',
-					icon: 'success',
+					title: '你选过了！',
+					icon: 'error',
 					mask: true
 				})
-			}).catch(err=>{
-				console.log(err);
-				uni.showToast({
-					title:'选课失败！',
-					icon:'fail',
-					mask:true
+			}
+			else {
+				//后端选课接口
+				this.$courseRequest({
+					url: "/course/choose-course",
+					method: "POST",
+					data:
+					{
+						classId: id,
+						studentNumber: that.studentNumber
+					}
+				}).then(res => {
+					console.log(res);
+
+					/**提示选课成功 */
+					uni.showToast({
+						title: '选课成功！',
+						icon: 'success',
+						mask: true
+					})
+					/**选课人数+1 */
+					console.log(id);
+					let changeIndex = that.showCourse.findIndex(item => {
+						if (item.course.courseCode === code) {
+							return true;
+						}
+					})
+
+					this.showCourse[changeIndex].teachingClassesList[index].selectedNum += 1;
+					this.showCourse[changeIndex].status = 1;
+
+				}).catch(err => {
+					console.log(err);
+					uni.showToast({
+						title: '选课失败！',
+						icon: 'fail',
+						mask: true
+					})
 				})
-			})
+			}
+
 
 		},
 
 		//根据学院id拿到学院名称
-		async getCollegeById(id)
-		{
+		async getCollegeById(id) {
 			let temp = "";
 
 			await this.$courseRequest({
-				url:'/college/'+id,
-				method:'GET'
-			}).then(res=>{
+				url: '/college/' + id,
+				method: 'GET'
+			}).then(res => {
 				console.log(res);
 				temp = res.data.collegeName;
 			})
-			
+
 			return temp;
 
 
 		},
 
 		//根据专业id拿到专业名称
-		async getMajorById(id)
-		{
+		async getMajorById(id) {
 			let temp = "";
 
 			await this.$courseRequest({
-				url:'/major/'+id,
-				method:'GET'
-			}).then(res=>{
+				url: '/major/' + id,
+				method: 'GET'
+			}).then(res => {
 				temp = res.data.majorName;
 			});
 
 			return temp;
 
+		},
+
+		//查看你是否选了这门课
+		async getAllStudentCourse() {
+
+			this.showCourse.forEach(element => {
+				element.status = 0;
+			});
+			let that = this;
+			let classIdList = [];
+
+			await this.$courseRequest({
+				url: "/learning-lesson",
+				method: "GET",
+				data: { studentNumber: "202122450635" }
+			}).then(res => {
+				classIdList = res.data.data;
+
+			});
+
+			//赋值是否选课
+			for (let i = that.showCourse.length - 1; i >= 0; i--) {
+				that.showCourse[i].status = 0;
+				console.log(that.showCourse);
+				for (let j = 0; j < classIdList.length; j++) {
+					if (that.showCourse[i] && classIdList[j]) {
+						if (that.showCourse[i].course.courseCode === classIdList[j].courseCode) {
+							that.showCourse[i].status = 1;
+							
+						}
+						else {
+							that.showCourse[i].status = 0;
+						}
+					}
+				}
+			}
+
+			console.log(this.showCourse);
+
+
 		}
 
-		
+
+
 
 	}
 }
@@ -430,5 +518,19 @@ export default {
 	display: flex;
 	flex-direction: column;
 	margin-left: 10rpx;
+}
+
+.exit
+
+/**退课按钮样式 */
+	{
+	color: #fff;
+	margin: 0 5px;
+	border-radius: 5px;
+	background-color: #075cef;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 15rpx;
 }
 </style>

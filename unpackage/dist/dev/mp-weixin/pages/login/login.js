@@ -203,32 +203,51 @@ var _default = {
       //账号密码
       var studentNumber = this.studentNumber;
       var studentPassword = this.password;
-      //请求后端
-      this.$courseRequest({
-        url: "/student/login",
-        method: 'POST',
-        data: {
-          studentNumber: studentNumber,
-          studentPassword: studentPassword
-        }
-      }).then(function (res) {
-        console.log(res);
-
-        //存储登录信息
-        uni.setStorage({
-          key: 'studentNumber',
-          data: studentNumber,
-          success: function success(result) {},
-          fail: function fail(error) {}
+      console.log(studentNumber.length);
+      //校验学号是否为12位
+      if (studentNumber.length !== 12) {
+        uni.showToast({
+          title: '学号错误！',
+          icon: 'error',
+          mask: true
         });
+      } else {
+        //请求后端
+        this.$courseRequest({
+          url: "/student/login",
+          method: 'POST',
+          data: {
+            studentNumber: studentNumber,
+            studentPassword: studentPassword
+          }
+        }).then(function (res) {
+          console.log(res);
 
-        //跳转主页
-        uni.switchTab({
-          url: '/pages/index/index'
+          //校验错误
+          if (res.data.data !== null) {
+            //存储登录信息
+            uni.setStorage({
+              key: 'studentNumber',
+              data: studentNumber,
+              success: function success(result) {},
+              fail: function fail(error) {}
+            });
+
+            //跳转主页
+            uni.switchTab({
+              url: '/pages/index/index'
+            });
+          } else {
+            uni.showToast({
+              title: '账号或密码错误！',
+              icon: 'error',
+              mask: true
+            });
+          }
+        }).catch(function (err) {
+          console.log(err);
         });
-      }).catch(function (err) {
-        console.log(err);
-      });
+      }
     },
     //验证码发送
     sendcode: function sendcode() {
