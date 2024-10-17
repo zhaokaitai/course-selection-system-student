@@ -496,7 +496,7 @@ var _default = {
         }, _callee2);
       }))();
     },
-    /**选课 */selectCourse: function selectCourse(code, index, id) {
+    /**选课 */selectCourse: function selectCourse(code, index, index1, id) {
       var _this5 = this;
       var that = this;
       console.log("选课");
@@ -508,40 +508,56 @@ var _default = {
           mask: true
         });
       } else {
-        //后端选课接口
-        this.$courseRequest({
-          url: "/course/choose-course",
-          method: "POST",
-          data: {
-            classId: id,
-            studentNumber: that.studentNumber
-          }
-        }).then(function (res) {
-          console.log(res);
-
-          /**提示选课成功 */
+        //判断课程人数是否满了
+        if (this.showCourse[index].teachingClassesList[index1].selectedNum === this.showCourse[index].teachingClassesList[index1].capacity) {
           uni.showToast({
-            title: '选课成功！',
-            icon: 'success',
+            title: '满员了',
+            icon: 'error',
             mask: true
           });
-          /**选课人数+1 */
-          console.log(id);
-          var changeIndex = that.showCourse.findIndex(function (item) {
-            if (item.course.courseCode === code) {
-              return true;
+        } else {
+          //后端选课接口
+          this.$courseRequest({
+            url: "/course/choose-course",
+            method: "POST",
+            data: {
+              classId: id,
+              studentNumber: that.studentNumber
             }
+          }).then(function (res) {
+            console.log(res);
+            if (res.data === true) {
+              /**提示选课成功 */
+              uni.showToast({
+                title: '选课成功！',
+                icon: 'success',
+                mask: true
+              });
+              /**选课人数+1 */
+              console.log(id);
+              var changeIndex = that.showCourse.findIndex(function (item) {
+                if (item.course.courseCode === code) {
+                  return true;
+                }
+              });
+              _this5.showCourse[changeIndex].teachingClassesList[index1].selectedNum += 1;
+              _this5.showCourse[changeIndex].status = 1;
+            } else {
+              uni.showToast({
+                title: '选课失败！，请检查先修课或是选课时间',
+                icon: 'error',
+                mask: true
+              });
+            }
+          }).catch(function (err) {
+            console.log(err);
+            uni.showToast({
+              title: '选课失败！',
+              icon: 'fail',
+              mask: true
+            });
           });
-          _this5.showCourse[changeIndex].teachingClassesList[index].selectedNum += 1;
-          _this5.showCourse[changeIndex].status = 1;
-        }).catch(function (err) {
-          console.log(err);
-          uni.showToast({
-            title: '选课失败！',
-            icon: 'fail',
-            mask: true
-          });
-        });
+        }
       }
     },
     //根据学院id拿到学院名称

@@ -14,8 +14,16 @@
           <uni-td>{{ item.className }}</uni-td>
           <uni-td>{{ item.classroom }}</uni-td>
           <uni-td>{{ item.selectedNum }}/{{ item.capacity }}</uni-td>
-          <uni-td><button class="exit" @click="dropCourse(item.classId)" type="warn"><text
-                class="button_text">退课</text></button></uni-td>
+          <uni-td>
+              <view v-if="item.idOptional == 0">
+                <button class="exit" @click="dropCourse(item.classId)" type="warn"><text
+                  class="button_text">退课</text></button>
+              </view>
+              <view v-if="item.idOptional == 1">
+                <button class="exit" type="warn"><text
+                  class="button_text">退课</text></button>
+              </view>
+          </uni-td>
         </uni-tr>
       </uni-table>
     </view>

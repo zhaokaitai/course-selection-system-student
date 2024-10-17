@@ -28,7 +28,7 @@
 							<uni-td>{{ item1.selectedNum }}/{{ item1.capacity }}</uni-td>
 							<uni-td>
 								<button class="choose"
-									@click="selectCourse(item.course.courseCode, index, item1.id)"><text
+									@click="selectCourse(item.course.courseCode, index, index1, item1.id)"><text
 										class="button_text">选课</text></button>
 
 
@@ -284,8 +284,8 @@ export default {
 		/**查询全部课程 */
 		async searchAllCourse() {
 			let that = this;
-			
-			
+
+
 
 			await this.$courseRequest({
 				url: "/course/list",
@@ -300,12 +300,12 @@ export default {
 			})
 
 
-			
+
 
 		},
 
 		/**选课 */
-		selectCourse(code, index, id) {
+		selectCourse(code, index, index1, id) {
 			let that = this;
 			console.log("选课");
 			console.log(index);
@@ -317,43 +317,63 @@ export default {
 				})
 			}
 			else {
-				//后端选课接口
-				this.$courseRequest({
-					url: "/course/choose-course",
-					method: "POST",
-					data:
-					{
-						classId: id,
-						studentNumber: that.studentNumber
-					}
-				}).then(res => {
-					console.log(res);
-
-					/**提示选课成功 */
+				//判断课程人数是否满了
+				if (this.showCourse[index].teachingClassesList[index1].selectedNum === this.showCourse[index].teachingClassesList[index1].capacity) {
 					uni.showToast({
-						title: '选课成功！',
-						icon: 'success',
+						title: '满员了',
+						icon: 'error',
 						mask: true
 					})
-					/**选课人数+1 */
-					console.log(id);
-					let changeIndex = that.showCourse.findIndex(item => {
-						if (item.course.courseCode === code) {
-							return true;
+				}
+				else {
+					//后端选课接口
+					this.$courseRequest({
+						url: "/course/choose-course",
+						method: "POST",
+						data:
+						{
+							classId: id,
+							studentNumber: that.studentNumber
 						}
-					})
+					}).then(res => {
+						console.log(res);
 
-					this.showCourse[changeIndex].teachingClassesList[index].selectedNum += 1;
-					this.showCourse[changeIndex].status = 1;
+						if (res.data === true) {
+							/**提示选课成功 */
+							uni.showToast({
+								title: '选课成功！',
+								icon: 'success',
+								mask: true
+							})
+							/**选课人数+1 */
+							console.log(id);
+							let changeIndex = that.showCourse.findIndex(item => {
+								if (item.course.courseCode === code) {
+									return true;
+								}
+							})
 
-				}).catch(err => {
-					console.log(err);
-					uni.showToast({
-						title: '选课失败！',
-						icon: 'fail',
-						mask: true
+							this.showCourse[changeIndex].teachingClassesList[index1].selectedNum += 1;
+							this.showCourse[changeIndex].status = 1;
+						}
+						else
+						{
+							uni.showToast({
+								title: '选课失败！，请检查先修课或是选课时间',
+								icon: 'error',
+								mask: true
+							})
+						}
+
+					}).catch(err => {
+						console.log(err);
+						uni.showToast({
+							title: '选课失败！',
+							icon: 'fail',
+							mask: true
+						})
 					})
-				})
+				}
 			}
 
 
@@ -417,7 +437,7 @@ export default {
 					if (that.showCourse[i] && classIdList[j]) {
 						if (that.showCourse[i].course.courseCode === classIdList[j].courseCode) {
 							that.showCourse[i].status = 1;
-							
+
 						}
 						else {
 							that.showCourse[i].status = 0;
