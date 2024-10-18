@@ -158,7 +158,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(uni) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -195,16 +195,25 @@ var _default = {
         data: {
           phone: that.phone,
           smsCode: that.code,
-          password: that.password,
-          passwordTwo: that.newPassword
+          password: that.newPassword,
+          passwordTwo: that.rePassword
         }
       }).then(function (res) {
         console.log(res);
+        uni.showToast({
+          title: '修改成功！',
+          icon: 'success',
+          mask: true
+        });
+        uni.navigateTo({
+          url: '/pages/login/login'
+        });
       });
     }
   }
 };
 exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 

@@ -20,7 +20,7 @@
                   class="button_text">退课</text></button>
               </view>
               <view v-if="item.idOptional == 1">
-                <button class="exit" type="warn"><text
+                <button class="forbidden"><text
                   class="button_text">退课</text></button>
               </view>
           </uni-td>
@@ -188,5 +188,17 @@ export default {
   {
   color: #fff;
   font-size: 12px;
+}
+
+.forbidden
+{
+  color: black;
+	margin: 0 5px;
+	border-radius: 5px;
+	background-color: gray;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 15rpx;
 }
 </style>

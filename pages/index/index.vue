@@ -13,28 +13,37 @@
 			<uni-collapse v-for="(item, index) in showCourse" :key="index">
 				<uni-collapse-item :title="item.course.name">
 					<!--课程详细信息和选课按钮-->
-					<uni-table>
-						<uni-tr>
-							<uni-th width="30" align="center">教学班</uni-th>
-							<uni-th width="30" align="center">上课时间</uni-th>
-							<uni-th width="30" align="center">上课地点</uni-th>
-							<uni-th width="30" align="center">已选/容量</uni-th>
-							<uni-th width="30" align="center">操作</uni-th>
-						</uni-tr>
-						<uni-tr v-for="(item1, index1) in item.teachingClassesList" :key="index1">
-							<uni-td>{{ item1.className }}</uni-td>
-							<uni-td>{{ item1.classTime }}</uni-td>
-							<uni-td>{{ item1.classroom }}</uni-td>
-							<uni-td>{{ item1.selectedNum }}/{{ item1.capacity }}</uni-td>
-							<uni-td>
-								<button class="choose"
-									@click="selectCourse(item.course.courseCode, index, index1, item1.id)"><text
-										class="button_text">选课</text></button>
+					<scroll-view scroll-x="true" @scroll="scroll"
+						style="width: 100%;overflow: hidden;white-space: nowrap;">
+						<view class="scroll-view_H">
+							<uni-table>
+								<uni-tr>
+									<uni-th width="30" align="center">教学班</uni-th>
+									<uni-th width="30" align="center">上课时间</uni-th>
+									<uni-th width="30" align="center">上课地点</uni-th>
+									<uni-th width="30" align="center">已选/容量</uni-th>
+									<uni-th width="30" align="center">操作</uni-th>
+									<uni-th width="30" align="center">查看详情</uni-th>
+								</uni-tr>
+								<uni-tr v-for="(item1, index1) in item.teachingClassesList" :key="index1">
+									<uni-td>{{ item1.className }}</uni-td>
+									<uni-td>{{ item1.classTime }}</uni-td>
+									<uni-td>{{ item1.classroom }}</uni-td>
+									<uni-td>{{ item1.selectedNum }}/{{ item1.capacity }}</uni-td>
+									<uni-td>
+										<button class="choose"
+											@click="selectCourse(item.course.courseCode, index, index1, item1.id)"><text
+												class="button_text">选课</text></button>
+									</uni-td>
+									<uni-td>
+										<button class="choose" @click="ToDetail(item.course.courseCode)"><text class="button_text">查看详情</text></button>
+									</uni-td>
 
 
-							</uni-td>
-						</uni-tr>
-					</uni-table>
+								</uni-tr>
+							</uni-table>
+						</view>
+					</scroll-view>
 				</uni-collapse-item>
 
 			</uni-collapse>
@@ -356,8 +365,7 @@ export default {
 							this.showCourse[changeIndex].teachingClassesList[index1].selectedNum += 1;
 							this.showCourse[changeIndex].status = 1;
 						}
-						else
-						{
+						else {
 							uni.showToast({
 								title: '选课失败！，请检查先修课或是选课时间',
 								icon: 'error',
@@ -449,6 +457,15 @@ export default {
 			console.log(this.showCourse);
 
 
+		},
+		//跳转详情
+		ToDetail(code)
+		{
+			console.log(code);
+
+			uni.navigateTo({
+				url:'/pages/courseDetail/courseDetail?courseCode='+code,
+			})
 		}
 
 
@@ -552,5 +569,13 @@ export default {
 	align-items: center;
 	justify-content: center;
 	padding: 0 15rpx;
+}
+
+
+//设置宽度，定义成弹性盒模式，并且不换行。
+.scroll-view_H {
+	width: 200%;
+	display: flex;
+	flex-wrap: nowrap;
 }
 </style>

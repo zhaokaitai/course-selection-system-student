@@ -30,6 +30,7 @@
             <text class="txt">密码</text>
             <input type="password" name="password" maxlength="18" placeholder="请输入您的密码" v-model="password" />
           </view>
+          <view @click="ToRepassword()"><text class="passwordTxt">忘记密码?</text></view>
           <button @click="handleLogin()">登 录</button>
         </form>
         <!--验证码-->
@@ -191,7 +192,16 @@ export default {
       })
 
       return studentNumber;
+    },
+
+
+    ToRepassword()
+    {
+      uni.navigateTo({
+        url:'/pages/rePassword/rePassword',
+      })
     }
+
   }
 };
 </script>
@@ -288,5 +298,10 @@ export default {
 
 .t-login .t-a {
   position: relative;
+}
+.passwordTxt
+{
+  color:#075cef;
+  font-size:18px;
 }
 </style>

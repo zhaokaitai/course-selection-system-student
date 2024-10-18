@@ -307,6 +307,11 @@ var _default = {
           }
         }, _callee);
       }))();
+    },
+    ToRepassword: function ToRepassword() {
+      uni.navigateTo({
+        url: '/pages/rePassword/rePassword'
+      });
     }
   }
 };

@@ -8,20 +8,12 @@
         class="image_size"
       />
       <view class="name_box">
-          <view>测试名称</view>
+          <view>{{course.name}}</view>
       </view>
     </view>
-    <!--展示介绍文字-->
-    <view class="text_box">
-      <uni-section class="mb-10" title="课程描述" type="line" titleFontSize="20px" titleColor="#333"></uni-section>
-      <text class="text_size">测试描述</text>
-    </view>
-    <!--选课按钮-->
-    <view class="bottom">
-      <button class="button_box">
-        了解详情
-      </button>
-    </view>
+    <!--展示教学班-->
+    
+    
   </view>
 </template>
 
@@ -29,8 +21,33 @@
   export default {
     data() {
       return {
-        
+        course:{},//课程详情
+        courseCode:"",//课程代码
+        teachingList:[]//教学班
       };
+    },
+
+    onLoad(options)
+    {
+      this.courseCode = options.courseCode;
+      this.getCourseByCode();
+    },
+    methods:
+    {
+      
+      getCourseByCode()
+      {
+        let that = this;
+
+        this.$courseRequest({
+          url:'/course/'+that.courseCode,
+          method:"GET",
+        }).then(res=>{
+          console.log(res.data.data.course);
+          that.course = res.data.data.course;
+          that.teachingList = res.data.data.teachingClassesList
+        })
+      }
     }
   }
 </script>

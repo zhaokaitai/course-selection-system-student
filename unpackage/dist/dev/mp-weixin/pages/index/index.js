@@ -271,6 +271,15 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/r
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   data: function data() {
     return {
@@ -662,6 +671,13 @@ var _default = {
           }
         }, _callee5);
       }))();
+    },
+    //跳转详情
+    ToDetail: function ToDetail(code) {
+      console.log(code);
+      uni.navigateTo({
+        url: '/pages/courseDetail/courseDetail?courseCode=' + code
+      });
     }
   }
 };

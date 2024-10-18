@@ -12,6 +12,7 @@
 			<view class="t-login">
 				<!--账号密码-->
 				<form class="cl">
+
 					<view class="t-a">
 						<text class="txt">请输入手机号：</text>
 						<input name="studentNumber" placeholder="请输入您的密保手机号" maxlength="12" v-model="phone" />
@@ -45,7 +46,7 @@
 <script>
 import CCodeButton from '../../components/c-codeButton/c-codeButton.vue';
 export default {
-	components:{
+	components: {
 		CCodeButton
 	},
 	data() {
@@ -56,24 +57,30 @@ export default {
 			rePassword: "", //重复密码
 		};
 	},
-	methods:{
+	methods: {
 		//改密码
-		changePassword()
-		{
+		changePassword() {
 			let that = this;
-
 			this.$courseRequest({
-				url:'/student/resetPassword',
-				method:'POST',
+				url: '/student/resetPassword',
+				method: 'POST',
 				data:
 				{
-					phone:that.phone,
-					smsCode:that.code,
-					password:that.password,
-					passwordTwo:that.newPassword
+					phone: that.phone,
+					smsCode: that.code,
+					password: that.newPassword,
+					passwordTwo: that.rePassword
 				}
-			}).then(res=>{
+			}).then(res => {
 				console.log(res);
+				uni.showToast({
+					title: '修改成功！',
+					icon: 'success',
+					mask: true
+				})
+				uni.navigateTo({
+					url:'/pages/login/login',
+				})
 			})
 
 		}

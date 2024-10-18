@@ -98,29 +98,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
-try {
-  components = {
-    uniSection: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-section/components/uni-section/uni-section */ "uni_modules/uni-section/components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-section/components/uni-section/uni-section.vue */ 165))
-    },
-  }
-} catch (e) {
-  if (
-    e.message.indexOf("Cannot find module") !== -1 &&
-    e.message.indexOf(".vue") !== -1
-  ) {
-    console.error(e.message)
-    console.error("1. 排查组件名称拼写是否正确")
-    console.error(
-      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
-    )
-    console.error(
-      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
-    )
-  } else {
-    throw e
-  }
-}
 var render = function () {
   var _vm = this
   var _h = _vm.$createElement
@@ -183,17 +160,32 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 var _default = {
   data: function data() {
-    return {};
+    return {
+      course: {},
+      //课程详情
+      courseCode: "",
+      //课程代码
+      teachingList: [] //教学班
+    };
+  },
+  onLoad: function onLoad(options) {
+    this.courseCode = options.courseCode;
+    this.getCourseByCode();
+  },
+  methods: {
+    getCourseByCode: function getCourseByCode() {
+      var that = this;
+      this.$courseRequest({
+        url: '/course/' + that.courseCode,
+        method: "GET"
+      }).then(function (res) {
+        console.log(res.data.data.course);
+        that.course = res.data.data.course;
+        that.teachingList = res.data.data.teachingClassesList;
+      });
+    }
   }
 };
 exports.default = _default;

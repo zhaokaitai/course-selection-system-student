@@ -104,4 +104,8 @@
 .t-login .t-a {
   position: relative;
 }
+.passwordTxt {
+  color: #075cef;
+  font-size: 18px;
+}
 

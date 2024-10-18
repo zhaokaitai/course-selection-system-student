@@ -87,4 +87,9 @@
   justify-content: center;
   padding: 0 15rpx;
 }
+.scroll-view_H {
+  width: 200%;
+  display: flex;
+  flex-wrap: nowrap;
+}
 
