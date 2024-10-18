@@ -101,7 +101,7 @@ var components
 try {
   components = {
     cCodeButton: function () {
-      return __webpack_require__.e(/*! import() | components/c-codeButton/c-codeButton */ "components/c-codeButton/c-codeButton").then(__webpack_require__.bind(null, /*! @/components/c-codeButton/c-codeButton.vue */ 98))
+      return __webpack_require__.e(/*! import() | components/c-codeButton/c-codeButton */ "components/c-codeButton/c-codeButton").then(__webpack_require__.bind(null, /*! @/components/c-codeButton/c-codeButton.vue */ 74))
     },
   }
 } catch (e) {
@@ -169,7 +169,7 @@ var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime
 var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 43));
 var CCodeButton = function CCodeButton() {
   __webpack_require__.e(/*! require.ensure | components/c-codeButton/c-codeButton */ "components/c-codeButton/c-codeButton").then((function () {
-    return resolve(__webpack_require__(/*! ../../components/c-codeButton/c-codeButton.vue */ 98));
+    return resolve(__webpack_require__(/*! ../../components/c-codeButton/c-codeButton.vue */ 74));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var _default = {
@@ -231,6 +231,14 @@ var _default = {
               data: studentNumber,
               success: function success(result) {},
               fail: function fail(error) {}
+            });
+            uni.setStorage({
+              key: 'userName',
+              data: res.data.data.userName
+            });
+            uni.setStorage({
+              key: 'phone',
+              data: res.data.data.phone
             });
 
             //跳转主页

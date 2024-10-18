@@ -118,6 +118,14 @@ export default {
               success: (result) => { },
               fail: (error) => { }
             });
+            uni.setStorage({
+              key:'userName',
+              data:res.data.data.userName,
+            });
+            uni.setStorage({
+              key:'phone',
+              data:res.data.data.phone
+            })
 
             //跳转主页
             uni.switchTab({
