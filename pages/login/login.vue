@@ -119,12 +119,12 @@ export default {
               fail: (error) => { }
             });
             uni.setStorage({
-              key:'userName',
-              data:res.data.data.userName,
+              key: 'userName',
+              data: res.data.data.userName,
             });
             uni.setStorage({
-              key:'phone',
-              data:res.data.data.phone
+              key: 'phone',
+              data: res.data.data.phone
             })
 
             //跳转主页
@@ -161,6 +161,7 @@ export default {
 
       let phone = this.phone;
       let smsCode = this.code;
+      let that = this;
 
       this.$courseRequest({
         url: '/student/loginByPhone',
@@ -173,17 +174,36 @@ export default {
       }).then(res => {
         console.log(res);
         let studentNumber = that.getStudentNumberByPhone(phone);
-        //存储登录信息
+        if(!studentNumber)
+        {
+          //存储登录信息
         uni.setStorage({
           key: 'studentNumber',
           data: studentNumber,
           success: (result) => { },
           fail: (error) => { }
         });
+
+        uni.setStorage({
+          key: 'userName',
+          data: res.data.data.userName,
+        });
+        uni.setStorage({
+          key: 'phone',
+          data: res.data.data.phone
+        })
         //跳转主页
         uni.switchTab({
           url: '/pages/index/index',
         })
+        }
+        else
+        {
+          uni.showToast({
+            title:"手机号不正确！",
+            icon:"success"
+          })
+        }
       })
 
     },
@@ -203,10 +223,9 @@ export default {
     },
 
 
-    ToRepassword()
-    {
+    ToRepassword() {
       uni.navigateTo({
-        url:'/pages/rePassword/rePassword',
+        url: '/pages/rePassword/rePassword',
       })
     }
 
@@ -307,9 +326,9 @@ export default {
 .t-login .t-a {
   position: relative;
 }
-.passwordTxt
-{
-  color:#075cef;
-  font-size:18px;
+
+.passwordTxt {
+  color: #075cef;
+  font-size: 18px;
 }
 </style>

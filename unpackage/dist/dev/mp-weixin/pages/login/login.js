@@ -266,6 +266,7 @@ var _default = {
       console.log("验证码登录");
       var phone = this.phone;
       var smsCode = this.code;
+      var that = this;
       this.$courseRequest({
         url: '/student/loginByPhone',
         method: 'POST',
@@ -276,17 +277,32 @@ var _default = {
       }).then(function (res) {
         console.log(res);
         var studentNumber = that.getStudentNumberByPhone(phone);
-        //存储登录信息
-        uni.setStorage({
-          key: 'studentNumber',
-          data: studentNumber,
-          success: function success(result) {},
-          fail: function fail(error) {}
-        });
-        //跳转主页
-        uni.switchTab({
-          url: '/pages/index/index'
-        });
+        if (!studentNumber) {
+          //存储登录信息
+          uni.setStorage({
+            key: 'studentNumber',
+            data: studentNumber,
+            success: function success(result) {},
+            fail: function fail(error) {}
+          });
+          uni.setStorage({
+            key: 'userName',
+            data: res.data.data.userName
+          });
+          uni.setStorage({
+            key: 'phone',
+            data: res.data.data.phone
+          });
+          //跳转主页
+          uni.switchTab({
+            url: '/pages/index/index'
+          });
+        } else {
+          uni.showToast({
+            title: "手机号不正确！",
+            icon: "success"
+          });
+        }
       });
     },
     //根据电话获取学号

@@ -61,6 +61,9 @@
           onLoad(options) {
             this.getStudentSchedule();
           },
+          onShow(options) {
+            this.getStudentSchedule();
+          },
           methods:{
               courseClick(re){
                   console.log(re)
@@ -81,6 +84,7 @@
               /**获取学生选的课程 */
               getStudentSchedule()
               {
+                this.courseList = [];
 
                 let that = this;
 
@@ -109,8 +113,10 @@
                         let endNum = that.includeEndTime(courseEndTime);
                         let dayNum = that.includeWeekData(courseDay);
 
+                        let result = endNum - (startNum-1);
+
                         //3.将课程存入数组中
-                        that.timetables[dayNum-1].splice(startNum-1,endNum-1,item.className);
+                        that.timetables[dayNum-1].splice(startNum-1,result,...Array(result).fill(item.className));
                         console.log(that.timetables);
 
                         

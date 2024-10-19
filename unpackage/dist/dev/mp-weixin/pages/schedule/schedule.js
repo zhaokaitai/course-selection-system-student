@@ -158,10 +158,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ 18));
 var Timetable = function Timetable() {
   __webpack_require__.e(/*! require.ensure | components/ly-curriculumtable/ly-curriculumtable */ "components/ly-curriculumtable/ly-curriculumtable").then((function () {
     return resolve(__webpack_require__(/*! ../../components/ly-curriculumtable/ly-curriculumtable.vue */ 188));
@@ -255,6 +257,9 @@ var _default = {
   onLoad: function onLoad(options) {
     this.getStudentSchedule();
   },
+  onShow: function onShow(options) {
+    this.getStudentSchedule();
+  },
   methods: {
     courseClick: function courseClick(re) {
       console.log(re);
@@ -272,6 +277,7 @@ var _default = {
       console.log("您选择了", e);
     },
     /**获取学生选的课程 */getStudentSchedule: function getStudentSchedule() {
+      this.courseList = [];
       var that = this;
       this.$courseRequest({
         url: "/learning-lesson",
@@ -288,6 +294,7 @@ var _default = {
         var courseEndTime = ''; //课程结束时间
         var courseDay = ''; //课程日期
         that.courseList.forEach(function (item, index) {
+          var _that$timetables;
           console.log(item.classTime);
 
           //1.提取课程开始时间和结束时间
@@ -299,9 +306,10 @@ var _default = {
           var startNum = that.includeStartTime(courseStartTime);
           var endNum = that.includeEndTime(courseEndTime);
           var dayNum = that.includeWeekData(courseDay);
+          var result = endNum - (startNum - 1);
 
           //3.将课程存入数组中
-          that.timetables[dayNum - 1].splice(startNum - 1, endNum - 1, item.className);
+          (_that$timetables = that.timetables[dayNum - 1]).splice.apply(_that$timetables, [startNum - 1, result].concat((0, _toConsumableArray2.default)(Array(result).fill(item.className))));
           console.log(that.timetables);
         });
       }).catch(function (err) {
