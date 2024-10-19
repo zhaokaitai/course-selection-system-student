@@ -15,13 +15,10 @@
           <uni-td>{{ item.classroom }}</uni-td>
           <uni-td>{{ item.selectedNum }}/{{ item.capacity }}</uni-td>
           <uni-td>
-            <view v-if="item.idOptional == 0">
               <button class="exit" @click="dropCourse(item.classId)" type="warn"><text
                   class="button_text">退课</text></button>
-            </view>
-            <view v-if="item.idOptional == 1">
-              <button class="forbidden"><text class="button_text">退课</text></button>
-            </view>
+            
+            
           </uni-td>
         </uni-tr>
       </uni-table>
