@@ -121,14 +121,8 @@ try {
     uniPopup: function () {
       return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 147))
     },
-    uniSearchBar: function () {
-      return Promise.all(/*! import() | uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue */ 154))
-    },
     uniSection: function () {
       return __webpack_require__.e(/*! import() | uni_modules/uni-section/components/uni-section/uni-section */ "uni_modules/uni-section/components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-section/components/uni-section/uni-section.vue */ 165))
-    },
-    uniDataCheckbox: function () {
-      return Promise.all(/*! import() | uni_modules/uni-data-checkbox/components/uni-data-checkbox/uni-data-checkbox */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-data-checkbox/components/uni-data-checkbox/uni-data-checkbox")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-data-checkbox/components/uni-data-checkbox/uni-data-checkbox.vue */ 172))
     },
   }
 } catch (e) {
@@ -275,11 +269,6 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/r
 //
 //
 //
-//
-//
-//
-//
-//
 var _default = {
   data: function data() {
     return {
@@ -307,6 +296,7 @@ var _default = {
       course: [],
       //展示在前台的课程列表
       showCourse: [],
+      courseIndex: 0,
       //年级单选框
       courseYear: [{
         text: "2026",
@@ -378,26 +368,14 @@ var _default = {
     };
   },
   onLoad: function onLoad() {
-    var _this = this;
     //接收存储的登陆数据
-    uni.getStorage({
-      key: 'studentNumber',
-      success: function success(res) {
-        _this.studentNumber = res.data;
-      }
-    });
+    this.getStorageNumber();
     this.searchAllCourse();
     this.getAllStudentCourse();
   },
   onShow: function onShow() {
-    var _this2 = this;
     //接收存储的登陆数据
-    uni.getStorage({
-      key: 'studentNumber',
-      success: function success(res) {
-        _this2.studentNumber = res.data;
-      }
-    });
+    this.getStorageNumber();
     this.searchAllCourse();
     this.getAllStudentCourse();
   },
@@ -438,20 +416,20 @@ var _default = {
       });
     },
     /**查询 */searchCourse: function searchCourse() {
-      var _this3 = this;
+      var _this = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
         var searchCollege, searchSubject, searchValue, queryCourse;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                searchCollege = _this3.queryCondition.college;
-                searchSubject = _this3.queryCondition.subject;
-                searchValue = _this3.searchValue; //搜索值
+                searchCollege = _this.queryCondition.college;
+                searchSubject = _this.queryCondition.subject;
+                searchValue = _this.searchValue; //搜索值
                 //查询
                 queryCourse = "";
                 if (searchCollege) {
-                  queryCourse = _this3.course.filter(function (item) {
+                  queryCourse = _this.course.filter(function (item) {
                     return item.course.collegeId === 1;
                   });
                 }
@@ -460,10 +438,10 @@ var _default = {
                     return item.course.name.includes(searchValue);
                   });
                 }
-                _this3.showCourse = queryCourse;
+                _this.showCourse = queryCourse;
 
                 //关闭弹出层
-                _this3.$refs.popup.close();
+                _this.$refs.popup.close();
               case 8:
               case "end":
                 return _context.stop();
@@ -479,16 +457,16 @@ var _default = {
       console.log(this.showCourse);
     },
     /**查询全部课程 */searchAllCourse: function searchAllCourse() {
-      var _this4 = this;
+      var _this2 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
         var that;
         return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                that = _this4;
+                that = _this2;
                 _context2.next = 3;
-                return _this4.$courseRequest({
+                return _this2.$courseRequest({
                   url: "/course/list",
                   method: "GET"
                 }).then(function (res) {
@@ -506,7 +484,7 @@ var _default = {
       }))();
     },
     /**选课 */selectCourse: function selectCourse(code, index, index1, id) {
-      var _this5 = this;
+      var _this3 = this;
       var that = this;
       console.log("选课");
       console.log(index);
@@ -549,11 +527,11 @@ var _default = {
                   return true;
                 }
               });
-              _this5.showCourse[changeIndex].teachingClassesList[index1].selectedNum += 1;
-              _this5.showCourse[changeIndex].status = 1;
+              _this3.showCourse[changeIndex].teachingClassesList[index1].selectedNum += 1;
+              _this3.showCourse[changeIndex].status = 1;
             } else {
               uni.showToast({
-                title: '选课失败！，请检查先修课或是选课时间',
+                title: '选课失败！请检查先修课或是选课时间',
                 icon: 'error',
                 mask: true
               });
@@ -571,7 +549,7 @@ var _default = {
     },
     //根据学院id拿到学院名称
     getCollegeById: function getCollegeById(id) {
-      var _this6 = this;
+      var _this4 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
         var temp;
         return _regenerator.default.wrap(function _callee3$(_context3) {
@@ -580,7 +558,7 @@ var _default = {
               case 0:
                 temp = "";
                 _context3.next = 3;
-                return _this6.$courseRequest({
+                return _this4.$courseRequest({
                   url: '/college/' + id,
                   method: 'GET'
                 }).then(function (res) {
@@ -599,7 +577,7 @@ var _default = {
     },
     //根据专业id拿到专业名称
     getMajorById: function getMajorById(id) {
-      var _this7 = this;
+      var _this5 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4() {
         var temp;
         return _regenerator.default.wrap(function _callee4$(_context4) {
@@ -608,7 +586,7 @@ var _default = {
               case 0:
                 temp = "";
                 _context4.next = 3;
-                return _this7.$courseRequest({
+                return _this5.$courseRequest({
                   url: '/major/' + id,
                   method: 'GET'
                 }).then(function (res) {
@@ -626,24 +604,24 @@ var _default = {
     },
     //查看你是否选了这门课
     getAllStudentCourse: function getAllStudentCourse() {
-      var _this8 = this;
+      var _this6 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5() {
         var that, classIdList, i, j;
         return _regenerator.default.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _this8.showCourse.forEach(function (element) {
+                _this6.showCourse.forEach(function (element) {
                   element.status = 0;
                 });
-                that = _this8;
+                that = _this6;
                 classIdList = [];
                 _context5.next = 5;
-                return _this8.$courseRequest({
+                return _this6.$courseRequest({
                   url: "/learning-lesson",
                   method: "GET",
                   data: {
-                    studentNumber: "202122450635"
+                    studentNumber: that.studentNumber
                   }
                 }).then(function (res) {
                   classIdList = res.data.data;
@@ -663,7 +641,7 @@ var _default = {
                     }
                   }
                 }
-                console.log(_this8.showCourse);
+                console.log(_this6.showCourse);
               case 7:
               case "end":
                 return _context5.stop();
@@ -678,6 +656,16 @@ var _default = {
       uni.navigateTo({
         url: '/pages/courseDetail/courseDetail?courseCode=' + code
       });
+    },
+    ToPopup: function ToPopup(index, type) {
+      this.type = type;
+      this.courseIndex = index;
+      console.log(this.showCourse);
+      this.$refs.popup.open(type); //从左边弹出
+    },
+    getStorageNumber: function getStorageNumber() {
+      var value = uni.getStorageSync('studentNumber');
+      this.studentNumber = value;
     }
   }
 };

@@ -15,14 +15,13 @@
           <uni-td>{{ item.classroom }}</uni-td>
           <uni-td>{{ item.selectedNum }}/{{ item.capacity }}</uni-td>
           <uni-td>
-              <view v-if="item.idOptional == 0">
-                <button class="exit" @click="dropCourse(item.classId)" type="warn"><text
+            <view v-if="item.idOptional == 0">
+              <button class="exit" @click="dropCourse(item.classId)" type="warn"><text
                   class="button_text">退课</text></button>
-              </view>
-              <view v-if="item.idOptional == 1">
-                <button class="forbidden"><text
-                  class="button_text">退课</text></button>
-              </view>
+            </view>
+            <view v-if="item.idOptional == 1">
+              <button class="forbidden"><text class="button_text">退课</text></button>
+            </view>
           </uni-td>
         </uni-tr>
       </uni-table>
@@ -35,37 +34,25 @@ export default {
   data() {
     return {
       courseList: [],//已选课程列表
-      studentNumber:""//学号
+      studentNumber: ""//学号
     };
   },
   onLoad(options) {
     //接收存储的登陆数据
-    uni.getStorage({
-      key:'studentNumber',
-      success:(res)=>{
-        
-        this.studentNumber = res.data
-      },
-    });
+    this.getStorageNumber();
+
     this.getStudentSchedule();
   },
-  onShow()
-  {
+  onShow() {
     //接收存储的登陆数据
-    uni.getStorage({
-      key:'studentNumber',
-      success:(res)=>{
-        
-        this.studentNumber = res.data
-      },
-    });
+    this.getStorageNumber();
+
     this.getStudentSchedule();
   },
   computed: {
     //计算教师名称
-    computedTeacherName() 
-    {
-      return async (id)=>{
+    computedTeacherName() {
+      return async (id) => {
         let name = await this.getTeacherId(id);
         return name;
       }
@@ -78,11 +65,11 @@ export default {
     getStudentSchedule() {
 
       let that = this;
-
+      console.log(that.studentNumber);
       this.$courseRequest({
         url: "/learning-lesson",
         method: "GET",
-        data: { studentNumber: "202122450635" }
+        data: { studentNumber: that.studentNumber }
       }).then(res => {
         that.courseList = res.data.data;
         console.log(that.courseList);
@@ -92,36 +79,34 @@ export default {
     },
 
     /**退课 */
-    dropCourse(id) 
-    {
+    dropCourse(id) {
       let that = this;
-			console.log("退课");
+      console.log("退课");
 
       //后端退课接口
       this.$courseRequest({
-        url:"/course/drop-course",
-        method:"POST",
+        url: "/course/drop-course",
+        method: "POST",
         data:
         {
-          classId:id,
-          studentNumber:"202122450635"//写死
+          classId: id,
+          studentNumber: "202122450635"//写死
         }
-      }).then(res=>{
+      }).then(res => {
         console.log(res);
         //从列表中删除该课程
-        let dropIndex = that.courseList.findIndex(item =>{
-          if(item.id === id)
-          {
+        let dropIndex = that.courseList.findIndex(item => {
+          if (item.id === id) {
             return true;
           }
         });
-        that.courseList.splice(dropIndex,1);
+        that.courseList.splice(dropIndex, 1);
 
         //提示退课成功
         uni.showToast({
-          title:'退课成功!',
-          icon:'success',
-          mask:true
+          title: '退课成功!',
+          icon: 'success',
+          mask: true
         })
 
       })
@@ -137,13 +122,19 @@ export default {
         url: "/teacher/" + id,
         method: "GET",
       }).then(res => {
-        name = res.data.teacherName;  
+        name = res.data.teacherName;
       });
       return name;
 
     },
 
-    
+    getStorageNumber()
+    {
+      let value = uni.getStorageSync('studentNumber');
+      this.studentNumber = value;
+    }
+
+
 
   }
 }
@@ -172,14 +163,14 @@ export default {
 
 /**退课按钮样式 */
   {
-    color: #fff;
-	margin: 0 5px;
-	border-radius: 5px;
-	background-color: #075cef;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 0 15rpx;
+  color: #fff;
+  margin: 0 5px;
+  border-radius: 5px;
+  background-color: #075cef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15rpx;
 }
 
 .button_text
@@ -190,15 +181,14 @@ export default {
   font-size: 12px;
 }
 
-.forbidden
-{
+.forbidden {
   color: black;
-	margin: 0 5px;
-	border-radius: 5px;
-	background-color: gray;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 0 15rpx;
+  margin: 0 5px;
+  border-radius: 5px;
+  background-color: gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15rpx;
 }
 </style>

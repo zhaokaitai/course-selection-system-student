@@ -22,6 +22,9 @@
 									<uni-th width="30" align="center">上课时间</uni-th>
 									<uni-th width="30" align="center">上课地点</uni-th>
 									<uni-th width="30" align="center">已选/容量</uni-th>
+									<uni-th width="30" align="center">开课学期</uni-th>
+									<uni-th width="30" align="center">开课学院</uni-th>
+									<uni-th width="30" align="center">学分</uni-th>
 									<uni-th width="30" align="center">操作</uni-th>
 									<uni-th width="30" align="center">查看详情</uni-th>
 								</uni-tr>
@@ -30,13 +33,16 @@
 									<uni-td>{{ item1.classTime }}</uni-td>
 									<uni-td>{{ item1.classroom }}</uni-td>
 									<uni-td>{{ item1.selectedNum }}/{{ item1.capacity }}</uni-td>
+									<uni-td>第{{ item.course.beginTerm }}学期</uni-td>
+									<uni-td>{{ item.course.courseType}}</uni-td>
+									<uni-td>{{ item.course.credit }}</uni-td>
 									<uni-td>
 										<button class="choose"
 											@click="selectCourse(item.course.courseCode, index, index1, item1.id)"><text
 												class="button_text">选课</text></button>
 									</uni-td>
 									<uni-td>
-										<button class="choose" @click="ToDetail(item.course.courseCode)"><text class="button_text">查看详情</text></button>
+										<button class="choose" @click="ToPopup(index,'bottom')"><text class="button_text">查看详情</text></button>
 									</uni-td>
 
 
@@ -51,32 +57,21 @@
 
 
 		<!--popup弹出层-->
+	
+
 		<view>
-			<uni-popup ref="popup" background-color="#fff">
-				<!--搜索栏-->
-				<view><uni-search-bar v-model="searchValue" @confirm="searchCourse" /></view>
-				<!--课程类别筛选条件-->
+			<uni-popup ref="popup" background-color="#fff" type="left">
 				<view class="pop-content">
-					<uni-section class="mb-10" title="课程类别" type="line" titleFontSize="20px"
+					<uni-section class="mb-10" title="课程描述" type="line" titleFontSize="20px"
 						titleColor="#333"></uni-section>
-					<uni-data-checkbox v-model="queryCondition.subject" :localdata="collegeSubject" />
+					<view class="into_text">{{ showCourse[courseIndex].course.courseIntroduction }}</view>
 				</view>
-				<!--学院筛选条件-->
 				<view class="pop-content">
-					<uni-section class="mb-10" title="学院" type="line" titleFontSize="20px"
+					<uni-section class="mb-10" title="课程大纲" type="line" titleFontSize="20px"
 						titleColor="#333"></uni-section>
-					<uni-data-checkbox v-model="queryCondition.college" :localdata="courseCollege"
-						@change="changeCollege" />
+					<view class="into_text">{{ showCourse[courseIndex].course.teacheringProgrammer }}</view>
 				</view>
-				<!--专业筛选条件-->
-				<view class="pop-content">
-					<uni-section class="mb-10" title="专业" type="line" titleFontSize="20px"
-						titleColor="#333"></uni-section>
-					<uni-data-checkbox v-model="queryCondition.subject" :localdata="collegeSubject" />
-				</view>
-
-
-
+				
 			</uni-popup>
 		</view>
 
@@ -103,6 +98,7 @@ export default {
 			course: [],
 			//展示在前台的课程列表
 			showCourse: [],
+			courseIndex:0,
 			//年级单选框
 			courseYear: [
 				{
@@ -190,23 +186,13 @@ export default {
 	},
 	onLoad() {
 		//接收存储的登陆数据
-		uni.getStorage({
-			key: 'studentNumber',
-			success: (res) => {
-				this.studentNumber = res.data
-			},
-		});
+		this.getStorageNumber();
 		this.searchAllCourse();
 		this.getAllStudentCourse();
 	},
 	onShow() {
 		//接收存储的登陆数据
-		uni.getStorage({
-			key: 'studentNumber',
-			success: (res) => {
-				this.studentNumber = res.data
-			},
-		});
+		this.getStorageNumber();
 		this.searchAllCourse();
 		this.getAllStudentCourse();
 	},
@@ -367,7 +353,7 @@ export default {
 						}
 						else {
 							uni.showToast({
-								title: '选课失败！，请检查先修课或是选课时间',
+								title: '选课失败！请检查先修课或是选课时间',
 								icon: 'error',
 								mask: true
 							})
@@ -431,7 +417,7 @@ export default {
 			await this.$courseRequest({
 				url: "/learning-lesson",
 				method: "GET",
-				data: { studentNumber: "202122450635" }
+				data: { studentNumber: that.studentNumber }
 			}).then(res => {
 				classIdList = res.data.data;
 
@@ -466,7 +452,19 @@ export default {
 			uni.navigateTo({
 				url:'/pages/courseDetail/courseDetail?courseCode='+code,
 			})
-		}
+		},
+		ToPopup(index,type)
+		{
+			this.type = type;
+			this.courseIndex = index;
+			console.log(this.showCourse);
+			this.$refs.popup.open(type)//从左边弹出
+		},
+		getStorageNumber()
+    {
+      let value = uni.getStorageSync('studentNumber');
+      this.studentNumber = value;
+    }
 
 
 
@@ -577,5 +575,10 @@ export default {
 	width: 200%;
 	display: flex;
 	flex-wrap: nowrap;
+}
+
+.into_text
+{
+	text-indent: 2em;
 }
 </style>

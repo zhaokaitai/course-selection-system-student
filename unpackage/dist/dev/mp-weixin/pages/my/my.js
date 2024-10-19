@@ -104,7 +104,7 @@ try {
       return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 147))
     },
     uniPopupDialog: function () {
-      return Promise.all(/*! import() | uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog.vue */ 257))
+      return Promise.all(/*! import() | uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog.vue */ 195))
     },
   }
 } catch (e) {
@@ -222,7 +222,6 @@ var _cCodeButton = _interopRequireDefault(__webpack_require__(/*! ../../componen
 //
 //
 //
-//
 var _default = {
   data: function data() {
     return {
@@ -275,7 +274,7 @@ var _default = {
       });
     },
     /***跳转更改个人信息界面 */ToInfo: function ToInfo() {
-      uni.navigateTo({
+      uni.redirectTo({
         url: '/pages/Info/Info'
       });
       var that = this;

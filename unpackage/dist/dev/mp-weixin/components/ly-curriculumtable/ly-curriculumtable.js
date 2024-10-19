@@ -80,13 +80,13 @@ var components
 try {
   components = {
     uniIcons: function () {
-      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 195))
+      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 207))
     },
     uniPopup: function () {
       return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 147))
     },
     lyDataCheckbox: function () {
-      return Promise.all(/*! import() | components/ly-data-checkbox/ly-data-checkbox */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/ly-data-checkbox/ly-data-checkbox")]).then(__webpack_require__.bind(null, /*! @/components/ly-data-checkbox/ly-data-checkbox.vue */ 227))
+      return Promise.all(/*! import() | components/ly-data-checkbox/ly-data-checkbox */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/ly-data-checkbox/ly-data-checkbox")]).then(__webpack_require__.bind(null, /*! @/components/ly-data-checkbox/ly-data-checkbox.vue */ 239))
     },
   }
 } catch (e) {
@@ -467,6 +467,7 @@ var _default2 = {
         weekIndex: weekIndex,
         name: course.name
       };
+      console.log(courseIndex);
       //console.log(`星期${data.week}; 第${data.index}节课; 课程名:${data.name}; 课节:${data.length}`)
       // console.log(data)
       this.$emit('courseClick', data);
@@ -620,8 +621,13 @@ var _default2 = {
       var a2 = Date.parse(new Date());
       var day = parseInt((a2 - a1) / (1000 * 60 * 60 * 24));
       return day;
+    },
+    /**点击按钮弹出弹出层 */toggle: function toggle(type) {
+      this.type = type;
+      this.$refs.popup.open(type); //从左边弹出
     }
   },
+
   watch: {
     //nowWeek 为接收参数的名称
     nowWeek: {

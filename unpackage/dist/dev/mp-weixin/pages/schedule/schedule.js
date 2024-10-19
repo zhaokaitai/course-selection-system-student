@@ -156,7 +156,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(uni) {
 
 var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
 Object.defineProperty(exports, "__esModule", {
@@ -251,13 +251,16 @@ var _default = {
       }, {
         index: '7',
         name: "周日"
-      }]
+      }],
+      studentNumber: ""
     };
   },
   onLoad: function onLoad(options) {
+    this.getStorageNumber();
     this.getStudentSchedule();
   },
   onShow: function onShow(options) {
+    this.getStorageNumber();
     this.getStudentSchedule();
   },
   methods: {
@@ -283,7 +286,7 @@ var _default = {
         url: "/learning-lesson",
         method: "GET",
         data: {
-          studentNumber: "202122450635"
+          studentNumber: that.studentNumber
         }
       }).then(function (res) {
         that.courseList = res.data.data;
@@ -345,10 +348,20 @@ var _default = {
         }
       });
       return num;
+    },
+    toggle: function toggle(type) {
+      console.log(course.name);
+
+      //获取课程名称
+    },
+    getStorageNumber: function getStorageNumber() {
+      var value = uni.getStorageSync('studentNumber');
+      this.studentNumber = value;
     }
   }
 };
 exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ })
 

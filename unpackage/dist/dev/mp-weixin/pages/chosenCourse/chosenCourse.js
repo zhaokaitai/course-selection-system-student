@@ -207,7 +207,6 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/r
 //
 //
 //
-//
 var _default = {
   data: function data() {
     return {
@@ -217,31 +216,19 @@ var _default = {
     };
   },
   onLoad: function onLoad(options) {
-    var _this = this;
     //接收存储的登陆数据
-    uni.getStorage({
-      key: 'studentNumber',
-      success: function success(res) {
-        _this.studentNumber = res.data;
-      }
-    });
+    this.getStorageNumber();
     this.getStudentSchedule();
   },
   onShow: function onShow() {
-    var _this2 = this;
     //接收存储的登陆数据
-    uni.getStorage({
-      key: 'studentNumber',
-      success: function success(res) {
-        _this2.studentNumber = res.data;
-      }
-    });
+    this.getStorageNumber();
     this.getStudentSchedule();
   },
   computed: {
     //计算教师名称
     computedTeacherName: function computedTeacherName() {
-      var _this3 = this;
+      var _this = this;
       return /*#__PURE__*/function () {
         var _ref = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(id) {
           var name;
@@ -250,7 +237,7 @@ var _default = {
               switch (_context.prev = _context.next) {
                 case 0:
                   _context.next = 2;
-                  return _this3.getTeacherId(id);
+                  return _this.getTeacherId(id);
                 case 2:
                   name = _context.sent;
                   return _context.abrupt("return", name);
@@ -273,11 +260,12 @@ var _default = {
      */
     getStudentSchedule: function getStudentSchedule() {
       var that = this;
+      console.log(that.studentNumber);
       this.$courseRequest({
         url: "/learning-lesson",
         method: "GET",
         data: {
-          studentNumber: "202122450635"
+          studentNumber: that.studentNumber
         }
       }).then(function (res) {
         that.courseList = res.data.data;
@@ -318,7 +306,7 @@ var _default = {
     },
     //获取teacher名称
     getTeacherId: function getTeacherId(id) {
-      var _this4 = this;
+      var _this2 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
         var name;
         return _regenerator.default.wrap(function _callee2$(_context2) {
@@ -327,7 +315,7 @@ var _default = {
               case 0:
                 name = "11";
                 _context2.next = 3;
-                return _this4.$courseRequest({
+                return _this2.$courseRequest({
                   url: "/teacher/" + id,
                   method: "GET"
                 }).then(function (res) {
@@ -342,6 +330,10 @@ var _default = {
           }
         }, _callee2);
       }))();
+    },
+    getStorageNumber: function getStorageNumber() {
+      var value = uni.getStorageSync('studentNumber');
+      this.studentNumber = value;
     }
   }
 };

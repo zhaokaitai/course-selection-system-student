@@ -122,7 +122,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var tableCheckbox = function tableCheckbox() {
   __webpack_require__.e(/*! require.ensure | uni_modules/uni-table/components/uni-tr/table-checkbox */ "uni_modules/uni-table/components/uni-tr/table-checkbox").then((function () {
-    return resolve(__webpack_require__(/*! ./table-checkbox.vue */ 203));
+    return resolve(__webpack_require__(/*! ./table-checkbox.vue */ 215));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 /**

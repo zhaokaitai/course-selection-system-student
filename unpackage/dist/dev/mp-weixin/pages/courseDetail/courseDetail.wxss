@@ -54,7 +54,7 @@
   position: fixed;
   left: 1rpx;
   right: 10rpx;
-  bottom: calc( 0px + 20px);
+  bottom: calc(0px + 20px);
   z-index: 1030;
   margin-bottom: 10rpx;
 }

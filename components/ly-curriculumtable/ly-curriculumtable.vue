@@ -152,7 +152,6 @@
 	  tMonthweeky:0,//周期里面的月份
 	  frontDate:0,//当前时间前 共有几天是这一周的下标数
 	  afterDate:0,//当前时间后 共有几天是这一周的下标数
-	  
 	  }
     },
 	created() {
@@ -233,6 +232,7 @@
           weekIndex: weekIndex,
           name: course.name
         }
+		console.log(courseIndex);
         //console.log(`星期${data.week}; 第${data.index}节课; 课程名:${data.name}; 课节:${data.length}`)
         // console.log(data)
         this.$emit('courseClick', data)
@@ -390,7 +390,13 @@
 		  let a2=Date.parse(new Date())
 		  let day=parseInt((a2-a1)/(1000*60*60*24)) 
 		  return day;
-	  }
+	  },
+	  /**点击按钮弹出弹出层 */
+		toggle(type) {
+			this.type = type;
+
+			this.$refs.popup.open(type)//从左边弹出
+		}
     },
 	watch: {
 	    //nowWeek 为接收参数的名称

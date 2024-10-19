@@ -10,8 +10,7 @@
 						<view class="center_img">
 							<!-- #ifndef MP-WEIXIN -->
 							<image src="/static/icon/touxiang.png"></image>
-							<!-- #endif -->
-							<open-data type="userAvatarUrl" class="user_head"></open-data>
+
 						</view>
 
 						<view class="center_info">
@@ -34,7 +33,7 @@
 			</view>
 
 			<view class="extra">
-				<view @click="toggle('center')" class="item icon-arrow">修改手号</view>
+				<view @click="toggle('center')" class="item icon-arrow">修改绑定手机号</view>
 				<view @click="logout()" class="item icon-arrow">退出登录</view>
 			</view>
 
@@ -102,7 +101,7 @@ export default {
 
 		/***跳转更改个人信息界面 */
 		ToInfo() {
-			uni.navigateTo({
+			uni.redirectTo({
 				url: '/pages/Info/Info',
 			})
 
