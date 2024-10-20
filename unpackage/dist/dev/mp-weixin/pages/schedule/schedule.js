@@ -99,7 +99,7 @@ var components
 try {
   components = {
     lyCurriculumtable: function () {
-      return __webpack_require__.e(/*! import() | components/ly-curriculumtable/ly-curriculumtable */ "components/ly-curriculumtable/ly-curriculumtable").then(__webpack_require__.bind(null, /*! @/components/ly-curriculumtable/ly-curriculumtable.vue */ 188))
+      return __webpack_require__.e(/*! import() | components/ly-curriculumtable/ly-curriculumtable */ "components/ly-curriculumtable/ly-curriculumtable").then(__webpack_require__.bind(null, /*! @/components/ly-curriculumtable/ly-curriculumtable.vue */ 161))
     },
   }
 } catch (e) {
@@ -166,7 +166,7 @@ exports.default = void 0;
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ 18));
 var Timetable = function Timetable() {
   __webpack_require__.e(/*! require.ensure | components/ly-curriculumtable/ly-curriculumtable */ "components/ly-curriculumtable/ly-curriculumtable").then((function () {
-    return resolve(__webpack_require__(/*! ../../components/ly-curriculumtable/ly-curriculumtable.vue */ 188));
+    return resolve(__webpack_require__(/*! ../../components/ly-curriculumtable/ly-curriculumtable.vue */ 161));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var _default = {
@@ -281,6 +281,12 @@ var _default = {
     },
     /**获取学生选的课程 */getStudentSchedule: function getStudentSchedule() {
       this.courseList = [];
+
+      //置空课表
+      this.timetables.forEach(function (subArray) {
+        subArray.fill('');
+      });
+      console.log(this.timetables);
       var that = this;
       this.$courseRequest({
         url: "/learning-lesson",

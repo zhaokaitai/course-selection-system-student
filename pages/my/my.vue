@@ -8,7 +8,6 @@
 					<view class="center_top">
 
 						<view class="center_img">
-							<!-- #ifndef MP-WEIXIN -->
 							<image src="/static/icon/touxiang.png"></image>
 
 						</view>
@@ -18,6 +17,7 @@
 
 							<view>{{ userName }}</view>
 							<view>{{ phone }}</view>
+							<view class="number_size">{{ studentNumber }}</view>
 						</view>
 
 						<view style="margin-left: 140rpx;margin-top: 15rpx;">
@@ -33,7 +33,7 @@
 			</view>
 
 			<view class="extra">
-				<view @click="toggle('center')" class="item icon-arrow">修改绑定手机号</view>
+				<view @click="toggle('top')" class="item icon-arrow">修改绑定手机号</view>
 				<view @click="logout()" class="item icon-arrow">退出登录</view>
 			</view>
 
@@ -42,9 +42,26 @@
 		<!--popup弹出层-->
 		<view>
 			<!-- 输入框示例 -->
-			<uni-popup ref="inputDialog" type="dialog">
-				<uni-popup-dialog ref="inputClose" mode="input" title="输入内容" value="" placeholder="请输入手机号"
-					@confirm="changePhone"></uni-popup-dialog>
+			<uni-popup ref="popup" background-color="#fff" type="top">
+				<view class="t-login">
+					<form class="c1">
+					<view class="t-a">
+						<text class="txt">手机号</text>
+						<input name="phone" placeholder="请输入您的手机号" maxlength="11" v-model="newPhone" />
+					</view>
+
+					<view class="t-a">
+						<text class="txt">验证码</text>
+						<view class="flex-code">
+							<input name="code" placeholder="请输入您的验证码" v-model="code" class="input-code" />
+							<c-codeButton :phoneNum="phone"></c-codeButton>
+						</view>
+					</view>
+
+					<button @click="changePhone()">确 定</button>
+
+				</form>
+				</view>
 			</uni-popup>
 		</view>
 
@@ -111,10 +128,10 @@ export default {
 		},
 
 		/**改变手机号 */
-		changePhone(newPhone) {
+		changePhone() {
 			let that = this;
-
-			if (!/^1[3456789]\d{9}$/.test(newPhone)) {
+			
+			if (!/^1[3456789]\d{9}$/.test(that.newPhone)) {
 
 				uni.showToast({
 					title: '请输入正确的手机号',
@@ -129,7 +146,7 @@ export default {
 					data:
 					{
 						studentNumber: that.studentNumber,
-						phone: newPhone,
+						phone: that.newPhone,
 						smsCode: that.code
 					}
 				}).then(res => {
@@ -140,7 +157,7 @@ export default {
 						icon: 'success'
 					});
 
-					that.phone = newPhone
+					that.phone = that.newPhone
 				})
 			}
 
@@ -148,7 +165,7 @@ export default {
 
 		/**点击按钮弹出弹出层 */
 		toggle(type) {
-			this.$refs.inputDialog.open()
+			this.$refs.popup.open()
 		},
 	}
 }
@@ -428,6 +445,14 @@ Page {
 	}
 }
 
+.t-login {
+  width: 600rpx;
+  margin: 0 auto;
+  font-size: 28rpx;
+  padding-top: 80rpx;
+}
+
+
 .cl {
 	zoom: 1;
 }
@@ -446,7 +471,26 @@ Page {
 	color: #333333;
 }
 
-.t-a {
+.t-login input {
+	height: 90rpx;
+	line-height: 90rpx;
+	margin-bottom: 50rpx;
+	border-bottom: 1px solid #e9e9e9;
+	font-size: 28rpx;
+}
+
+.t-login .t-a {
 	position: relative;
+}
+
+.passwordTxt {
+	color: #075cef;
+	font-size: 18px;
+}
+
+.number_size
+{
+	font-size: 12px;
+	color:gray;
 }
 </style>

@@ -2,6 +2,6 @@
   "navigationBarTitleText": "my",
   "usingComponents": {
     "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
-    "uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
+    "c-code-button": "/components/c-codeButton/c-codeButton"
   }
 }

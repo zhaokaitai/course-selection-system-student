@@ -122,7 +122,7 @@ try {
       return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 147))
     },
     uniSection: function () {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-section/components/uni-section/uni-section */ "uni_modules/uni-section/components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-section/components/uni-section/uni-section.vue */ 165))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-section/components/uni-section/uni-section */ "uni_modules/uni-section/components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-section/components/uni-section/uni-section.vue */ 154))
     },
   }
 } catch (e) {
@@ -269,6 +269,9 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/r
 //
 //
 //
+//
+//
+//
 var _default = {
   data: function data() {
     return {
@@ -296,6 +299,7 @@ var _default = {
       course: [],
       //展示在前台的课程列表
       showCourse: [],
+      showCourse1: [],
       courseIndex: 0,
       //年级单选框
       courseYear: [{
@@ -488,7 +492,8 @@ var _default = {
       var that = this;
       console.log("选课");
       console.log(index);
-      if (this.showCourse[index].status === 1) {
+      console.log(this.showCourse1[index].status);
+      if (this.showCourse1[index].status === 1) {
         uni.showToast({
           title: '你选过了！',
           icon: 'error',
@@ -496,7 +501,7 @@ var _default = {
         });
       } else {
         //判断课程人数是否满了
-        if (this.showCourse[index].teachingClassesList[index1].selectedNum === this.showCourse[index].teachingClassesList[index1].capacity) {
+        if (this.showCourse1[index].teachingClassesList[index1].selectedNum === this.showCourse1[index].teachingClassesList[index1].capacity) {
           uni.showToast({
             title: '满员了',
             icon: 'error',
@@ -522,17 +527,17 @@ var _default = {
               });
               /**选课人数+1 */
               console.log(id);
-              var changeIndex = that.showCourse.findIndex(function (item) {
+              var changeIndex = that.showCourse1.findIndex(function (item) {
                 if (item.course.courseCode === code) {
                   return true;
                 }
               });
-              _this3.showCourse[changeIndex].teachingClassesList[index1].selectedNum += 1;
-              _this3.showCourse[changeIndex].status = 1;
+              _this3.showCourse1[changeIndex].teachingClassesList[index1].selectedNum += 1;
+              _this3.showCourse1[changeIndex].status = 1;
             } else {
               uni.showToast({
                 title: '选课失败！请检查先修课或是选课时间',
-                icon: 'error',
+                icon: 'none',
                 mask: true
               });
             }
@@ -611,12 +616,9 @@ var _default = {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                _this6.showCourse.forEach(function (element) {
-                  element.status = 0;
-                });
                 that = _this6;
                 classIdList = [];
-                _context5.next = 5;
+                _context5.next = 4;
                 return _this6.$courseRequest({
                   url: "/learning-lesson",
                   method: "GET",
@@ -626,23 +628,49 @@ var _default = {
                 }).then(function (res) {
                   classIdList = res.data.data;
                 });
-              case 5:
+              case 4:
+                console.log(classIdList);
+                _this6.showCourse1 = that.showCourse;
+
                 //赋值是否选课
-                for (i = that.showCourse.length - 1; i >= 0; i--) {
-                  that.showCourse[i].status = 0;
-                  console.log(that.showCourse);
-                  for (j = 0; j < classIdList.length; j++) {
-                    if (that.showCourse[i] && classIdList[j]) {
-                      if (that.showCourse[i].course.courseCode === classIdList[j].courseCode) {
-                        that.showCourse[i].status = 1;
-                      } else {
-                        that.showCourse[i].status = 0;
-                      }
-                    }
-                  }
-                }
-                console.log(_this6.showCourse);
+                i = that.showCourse1.length - 1;
               case 7:
+                if (!(i >= 0)) {
+                  _context5.next = 26;
+                  break;
+                }
+                console.log(that.showCourse1);
+                j = 0;
+              case 10:
+                if (!(j < classIdList.length)) {
+                  _context5.next = 23;
+                  break;
+                }
+                if (!(that.showCourse1[i] && classIdList[j])) {
+                  _context5.next = 20;
+                  break;
+                }
+                if (!(that.showCourse1[i].course.courseCode === classIdList[j].courseCode)) {
+                  _context5.next = 18;
+                  break;
+                }
+                that.showCourse1[i].status = 1;
+                console.log("第" + i + "个课程" + that.showCourse1[i].course.courseCode + "，第" + j + "个选课" + classIdList[j].courseCode);
+                return _context5.abrupt("break", 23);
+              case 18:
+                that.showCourse1[i].status = 0;
+                console.log("111第" + i + "个课程" + that.showCourse1[i].course.courseCode + "，第" + j + "个选课" + classIdList[j].courseCode);
+              case 20:
+                j++;
+                _context5.next = 10;
+                break;
+              case 23:
+                i--;
+                _context5.next = 7;
+                break;
+              case 26:
+                console.log(_this6.showCourse1);
+              case 27:
               case "end":
                 return _context5.stop();
             }
@@ -666,6 +694,39 @@ var _default = {
     getStorageNumber: function getStorageNumber() {
       var value = uni.getStorageSync('studentNumber');
       this.studentNumber = value;
+    },
+    scroll: function scroll() {},
+    dropCourse: function dropCourse(code, index, index1, id) {
+      var _this7 = this;
+      var that = this;
+      console.log("退课");
+
+      //后端退课接口
+      this.$courseRequest({
+        url: "/course/drop-course",
+        method: "POST",
+        data: {
+          classId: id,
+          studentNumber: that.studentNumber
+        }
+      }).then(function (res) {
+        console.log(res);
+        //
+        var changeIndex = that.showCourse.findIndex(function (item) {
+          if (item.course.courseCode === code) {
+            return true;
+          }
+        });
+        _this7.showCourse[changeIndex].teachingClassesList[index1].selectedNum -= 1;
+        _this7.showCourse[changeIndex].status = 0;
+
+        //提示退课成功
+        uni.showToast({
+          title: '退课成功!',
+          icon: 'success',
+          mask: true
+        });
+      });
     }
   }
 };

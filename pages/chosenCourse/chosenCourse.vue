@@ -87,7 +87,7 @@ export default {
         data:
         {
           classId: id,
-          studentNumber: "202122450635"//写死
+          studentNumber: that.studentNumber//写死
         }
       }).then(res => {
         console.log(res);

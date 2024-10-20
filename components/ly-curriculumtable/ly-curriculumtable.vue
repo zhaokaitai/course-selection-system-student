@@ -15,8 +15,8 @@
 		<view class="left-text">
 			<text class="month-text">{{tMonth}}<br>月</text>
 			<view :class="weeky==(i)?'text-content-today':'text-content'" v-for="i in 7" :key="i">
-					<text class="week-txt"  :style="{ 'color': dMonth === dateDetailsLi[i-1] ? '#FFF' : 'unset', 'background-color': dMonth === dateDetailsLi[i-1] ? '#4070FF' : 'unset' }">{{ week[i-1]}}</text>
-					<text class="date-txt"  :style="{ 'color': dMonth === dateDetailsLi[i-1] ? '#FFF' : 'unset','background-color': dMonth === dateDetailsLi[i-1] ? '#4070FF' : 'unset' }">{{ dateLi[i-1]}}</text>
+					<text class="week-txt"  :style="{ 'color': dMonth === dateDetailsLi[i-1] ? '#FFF' : 'unset', 'background-color': dMonth === dateDetailsLi[i-1] ? '#4070FF' : 'unset' }">{{ week[i]}}</text>
+					<text class="date-txt"  :style="{ 'color': dMonth === dateDetailsLi[i-1] ? '#FFF' : 'unset','background-color': dMonth === dateDetailsLi[i-1] ? '#4070FF' : 'unset' }">{{ dateLi[i]}}</text>
 			</view>
 		</view>
 		<u-line></u-line>

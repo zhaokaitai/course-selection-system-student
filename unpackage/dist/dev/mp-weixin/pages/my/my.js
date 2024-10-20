@@ -103,8 +103,8 @@ try {
     uniPopup: function () {
       return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 147))
     },
-    uniPopupDialog: function () {
-      return Promise.all(/*! import() | uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog.vue */ 195))
+    cCodeButton: function () {
+      return Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! @/components/c-codeButton/c-codeButton.vue */ 74))
     },
   }
 } catch (e) {
@@ -222,6 +222,23 @@ var _cCodeButton = _interopRequireDefault(__webpack_require__(/*! ../../componen
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   data: function data() {
     return {
@@ -279,9 +296,9 @@ var _default = {
       });
       var that = this;
     },
-    /**改变手机号 */changePhone: function changePhone(newPhone) {
+    /**改变手机号 */changePhone: function changePhone() {
       var that = this;
-      if (!/^1[3456789]\d{9}$/.test(newPhone)) {
+      if (!/^1[3456789]\d{9}$/.test(that.newPhone)) {
         uni.showToast({
           title: '请输入正确的手机号',
           icon: 'none'
@@ -293,7 +310,7 @@ var _default = {
           method: "POST",
           data: {
             studentNumber: that.studentNumber,
-            phone: newPhone,
+            phone: that.newPhone,
             smsCode: that.code
           }
         }).then(function (res) {
@@ -302,12 +319,12 @@ var _default = {
             title: '修改成功！',
             icon: 'success'
           });
-          that.phone = newPhone;
+          that.phone = that.newPhone;
         });
       }
     },
     /**点击按钮弹出弹出层 */toggle: function toggle(type) {
-      this.$refs.inputDialog.open();
+      this.$refs.popup.open();
     }
   }
 };

@@ -58,11 +58,13 @@ export default {
     }
   },
   onLoad(options) {
+   
     this.getStorageNumber();
     this.getStudentSchedule();
 
   },
   onShow(options) {
+
     this.getStorageNumber();
     this.getStudentSchedule();
   },
@@ -86,6 +88,12 @@ export default {
     /**获取学生选的课程 */
     getStudentSchedule() {
       this.courseList = [];
+      
+      //置空课表
+      this.timetables.forEach(subArray =>{
+        subArray.fill('');
+      })
+      console.log(this.timetables);
 
       let that = this;
 

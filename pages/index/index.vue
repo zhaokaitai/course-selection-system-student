@@ -4,13 +4,13 @@
 
 		<!--查看查询条件的按钮-->
 		<view class="button_box">
-			<button class="query_button" @click="toggle('left')"><text class="button_text">选择课程的筛选条件</text></button>
+			<button class="query_button" @click=""><text class="button_text">选择课程的筛选条件</text></button>
 		</view>
 
 		<!--课程展示-->
 		<view class="course_box"><!--后面使用循环-->
 			<!--使用uni-ui的折叠组件，折叠详情-->
-			<uni-collapse v-for="(item, index) in showCourse" :key="index">
+			<uni-collapse v-for="(item, index) in showCourse1" :key="index">
 				<uni-collapse-item :title="item.course.name">
 					<!--课程详细信息和选课按钮-->
 					<scroll-view scroll-x="true" @scroll="scroll"
@@ -34,15 +34,18 @@
 									<uni-td>{{ item1.classroom }}</uni-td>
 									<uni-td>{{ item1.selectedNum }}/{{ item1.capacity }}</uni-td>
 									<uni-td>第{{ item.course.beginTerm }}学期</uni-td>
-									<uni-td>{{ item.course.courseType}}</uni-td>
+									<uni-td>{{ item.course.courseType }}</uni-td>
 									<uni-td>{{ item.course.credit }}</uni-td>
 									<uni-td>
+
 										<button class="choose"
 											@click="selectCourse(item.course.courseCode, index, index1, item1.id)"><text
 												class="button_text">选课</text></button>
+
 									</uni-td>
 									<uni-td>
-										<button class="choose" @click="ToPopup(index,'bottom')"><text class="button_text">查看详情</text></button>
+										<button class="choose" @click="ToPopup(index, 'bottom')"><text
+												class="button_text">查看详情</text></button>
 									</uni-td>
 
 
@@ -57,21 +60,21 @@
 
 
 		<!--popup弹出层-->
-	
+
 
 		<view>
 			<uni-popup ref="popup" background-color="#fff" type="left">
 				<view class="pop-content">
 					<uni-section class="mb-10" title="课程描述" type="line" titleFontSize="20px"
 						titleColor="#333"></uni-section>
-					<view class="into_text">{{ showCourse[courseIndex].course.courseIntroduction }}</view>
+					<view class="into_text">{{ showCourse1[courseIndex].course.courseIntroduction }}</view>
 				</view>
 				<view class="pop-content">
 					<uni-section class="mb-10" title="课程大纲" type="line" titleFontSize="20px"
 						titleColor="#333"></uni-section>
-					<view class="into_text">{{ showCourse[courseIndex].course.teacheringProgrammer }}</view>
+					<view class="into_text">{{ showCourse1[courseIndex].course.teacheringProgrammer }}</view>
 				</view>
-				
+
 			</uni-popup>
 		</view>
 
@@ -98,7 +101,8 @@ export default {
 			course: [],
 			//展示在前台的课程列表
 			showCourse: [],
-			courseIndex:0,
+			showCourse1: [],
+			courseIndex: 0,
 			//年级单选框
 			courseYear: [
 				{
@@ -304,7 +308,8 @@ export default {
 			let that = this;
 			console.log("选课");
 			console.log(index);
-			if (this.showCourse[index].status === 1) {
+			console.log(this.showCourse1[index].status);
+			if (this.showCourse1[index].status === 1) {
 				uni.showToast({
 					title: '你选过了！',
 					icon: 'error',
@@ -313,7 +318,7 @@ export default {
 			}
 			else {
 				//判断课程人数是否满了
-				if (this.showCourse[index].teachingClassesList[index1].selectedNum === this.showCourse[index].teachingClassesList[index1].capacity) {
+				if (this.showCourse1[index].teachingClassesList[index1].selectedNum === this.showCourse1[index].teachingClassesList[index1].capacity) {
 					uni.showToast({
 						title: '满员了',
 						icon: 'error',
@@ -342,19 +347,19 @@ export default {
 							})
 							/**选课人数+1 */
 							console.log(id);
-							let changeIndex = that.showCourse.findIndex(item => {
+							let changeIndex = that.showCourse1.findIndex(item => {
 								if (item.course.courseCode === code) {
 									return true;
 								}
 							})
 
-							this.showCourse[changeIndex].teachingClassesList[index1].selectedNum += 1;
-							this.showCourse[changeIndex].status = 1;
+							this.showCourse1[changeIndex].teachingClassesList[index1].selectedNum += 1;
+							this.showCourse1[changeIndex].status = 1;
 						}
 						else {
 							uni.showToast({
 								title: '选课失败！请检查先修课或是选课时间',
-								icon: 'error',
+								icon: 'none',
 								mask: true
 							})
 						}
@@ -408,9 +413,7 @@ export default {
 		//查看你是否选了这门课
 		async getAllStudentCourse() {
 
-			this.showCourse.forEach(element => {
-				element.status = 0;
-			});
+
 			let that = this;
 			let classIdList = [];
 
@@ -420,54 +423,95 @@ export default {
 				data: { studentNumber: that.studentNumber }
 			}).then(res => {
 				classIdList = res.data.data;
-
+				
 			});
+			console.log(classIdList);
+			this.showCourse1 = that.showCourse;
 
 			//赋值是否选课
-			for (let i = that.showCourse.length - 1; i >= 0; i--) {
-				that.showCourse[i].status = 0;
-				console.log(that.showCourse);
+			for (let i = that.showCourse1.length - 1; i >= 0; i--) {
+				console.log(that.showCourse1);
 				for (let j = 0; j < classIdList.length; j++) {
-					if (that.showCourse[i] && classIdList[j]) {
-						if (that.showCourse[i].course.courseCode === classIdList[j].courseCode) {
-							that.showCourse[i].status = 1;
-
+					if (that.showCourse1[i] && classIdList[j]) {
+						if (that.showCourse1[i].course.courseCode === classIdList[j].courseCode) {
+							that.showCourse1[i].status = 1;
+							console.log("第"+i+"个课程"+that.showCourse1[i].course.courseCode+"，第"+j+"个选课"+classIdList[j].courseCode);
+							break;
 						}
 						else {
-							that.showCourse[i].status = 0;
+							that.showCourse1[i].status = 0;
+							console.log("111第"+i+"个课程"+that.showCourse1[i].course.courseCode+"，第"+j+"个选课"+classIdList[j].courseCode);
 						}
 					}
 				}
 			}
 
-			console.log(this.showCourse);
+			console.log(this.showCourse1);
 
 
 		},
 		//跳转详情
-		ToDetail(code)
-		{
+		ToDetail(code) {
 			console.log(code);
 
 			uni.navigateTo({
-				url:'/pages/courseDetail/courseDetail?courseCode='+code,
+				url: '/pages/courseDetail/courseDetail?courseCode=' + code,
 			})
 		},
-		ToPopup(index,type)
-		{
+		ToPopup(index, type) {
 			this.type = type;
 			this.courseIndex = index;
 			console.log(this.showCourse);
 			this.$refs.popup.open(type)//从左边弹出
 		},
-		getStorageNumber()
-    {
-      let value = uni.getStorageSync('studentNumber');
-      this.studentNumber = value;
-    }
+		getStorageNumber() {
+			let value = uni.getStorageSync('studentNumber');
+			this.studentNumber = value;
 
 
+		},
 
+
+		scroll() {
+
+		},
+
+
+		dropCourse(code, index, index1, id) {
+			let that = this;
+			console.log("退课");
+
+			//后端退课接口
+			this.$courseRequest({
+				url: "/course/drop-course",
+				method: "POST",
+				data:
+				{
+					classId: id,
+					studentNumber: that.studentNumber
+				}
+			}).then(res => {
+				console.log(res);
+				//
+				let changeIndex = that.showCourse.findIndex(item => {
+					if (item.course.courseCode === code) {
+						return true;
+					}
+				})
+
+				this.showCourse[changeIndex].teachingClassesList[index1].selectedNum -= 1;
+				this.showCourse[changeIndex].status = 0;
+
+				//提示退课成功
+				uni.showToast({
+					title: '退课成功!',
+					icon: 'success',
+					mask: true
+				})
+
+			})
+
+		},
 
 	}
 }
@@ -577,8 +621,7 @@ export default {
 	flex-wrap: nowrap;
 }
 
-.into_text
-{
+.into_text {
 	text-indent: 2em;
 }
 </style>
