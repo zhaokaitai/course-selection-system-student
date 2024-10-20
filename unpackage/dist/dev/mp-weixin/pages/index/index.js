@@ -458,7 +458,6 @@ var _default = {
     showAllCourse: function showAllCourse() {
       this.searchAllCourse();
       this.getAllStudentCourse(); //获取所有已选课程
-      console.log(this.showCourse);
     },
     /**查询全部课程 */searchAllCourse: function searchAllCourse() {
       var _this2 = this;
@@ -491,8 +490,6 @@ var _default = {
       var _this3 = this;
       var that = this;
       console.log("选课");
-      console.log(index);
-      console.log(this.showCourse1[index].status);
       if (this.showCourse1[index].status === 1) {
         uni.showToast({
           title: '你选过了！',
@@ -517,7 +514,6 @@ var _default = {
               studentNumber: that.studentNumber
             }
           }).then(function (res) {
-            console.log(res);
             if (res.data === true) {
               /**提示选课成功 */
               uni.showToast({
@@ -526,7 +522,6 @@ var _default = {
                 mask: true
               });
               /**选课人数+1 */
-              console.log(id);
               var changeIndex = that.showCourse1.findIndex(function (item) {
                 if (item.course.courseCode === code) {
                   return true;
@@ -629,48 +624,43 @@ var _default = {
                   classIdList = res.data.data;
                 });
               case 4:
-                console.log(classIdList);
-                _this6.showCourse1 = that.showCourse;
-
+                _this6.showCourse1 = _this6.showCourse;
                 //赋值是否选课
                 i = that.showCourse1.length - 1;
-              case 7:
+              case 6:
                 if (!(i >= 0)) {
-                  _context5.next = 26;
+                  _context5.next = 24;
                   break;
                 }
-                console.log(that.showCourse1);
                 j = 0;
-              case 10:
+              case 8:
                 if (!(j < classIdList.length)) {
-                  _context5.next = 23;
+                  _context5.next = 21;
                   break;
                 }
                 if (!(that.showCourse1[i] && classIdList[j])) {
-                  _context5.next = 20;
+                  _context5.next = 18;
                   break;
                 }
                 if (!(that.showCourse1[i].course.courseCode === classIdList[j].courseCode)) {
-                  _context5.next = 18;
+                  _context5.next = 16;
                   break;
                 }
                 that.showCourse1[i].status = 1;
                 console.log("第" + i + "个课程" + that.showCourse1[i].course.courseCode + "，第" + j + "个选课" + classIdList[j].courseCode);
-                return _context5.abrupt("break", 23);
-              case 18:
+                return _context5.abrupt("break", 21);
+              case 16:
                 that.showCourse1[i].status = 0;
                 console.log("111第" + i + "个课程" + that.showCourse1[i].course.courseCode + "，第" + j + "个选课" + classIdList[j].courseCode);
-              case 20:
+              case 18:
                 j++;
-                _context5.next = 10;
+                _context5.next = 8;
                 break;
-              case 23:
+              case 21:
                 i--;
-                _context5.next = 7;
+                _context5.next = 6;
                 break;
-              case 26:
-                console.log(_this6.showCourse1);
-              case 27:
+              case 24:
               case "end":
                 return _context5.stop();
             }
@@ -688,7 +678,6 @@ var _default = {
     ToPopup: function ToPopup(index, type) {
       this.type = type;
       this.courseIndex = index;
-      console.log(this.showCourse);
       this.$refs.popup.open(type); //从左边弹出
     },
     getStorageNumber: function getStorageNumber() {

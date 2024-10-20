@@ -277,7 +277,6 @@ export default {
 		showAllCourse() {
 			this.searchAllCourse();
 			this.getAllStudentCourse();//获取所有已选课程
-			console.log(this.showCourse);
 		},
 
 		/**查询全部课程 */
@@ -300,15 +299,12 @@ export default {
 
 
 
-
 		},
 
 		/**选课 */
 		selectCourse(code, index, index1, id) {
 			let that = this;
 			console.log("选课");
-			console.log(index);
-			console.log(this.showCourse1[index].status);
 			if (this.showCourse1[index].status === 1) {
 				uni.showToast({
 					title: '你选过了！',
@@ -336,7 +332,6 @@ export default {
 							studentNumber: that.studentNumber
 						}
 					}).then(res => {
-						console.log(res);
 
 						if (res.data === true) {
 							/**提示选课成功 */
@@ -346,7 +341,6 @@ export default {
 								mask: true
 							})
 							/**选课人数+1 */
-							console.log(id);
 							let changeIndex = that.showCourse1.findIndex(item => {
 								if (item.course.courseCode === code) {
 									return true;
@@ -423,14 +417,10 @@ export default {
 				data: { studentNumber: that.studentNumber }
 			}).then(res => {
 				classIdList = res.data.data;
-				
 			});
-			console.log(classIdList);
-			this.showCourse1 = that.showCourse;
-
+			this.showCourse1 = this.showCourse;
 			//赋值是否选课
 			for (let i = that.showCourse1.length - 1; i >= 0; i--) {
-				console.log(that.showCourse1);
 				for (let j = 0; j < classIdList.length; j++) {
 					if (that.showCourse1[i] && classIdList[j]) {
 						if (that.showCourse1[i].course.courseCode === classIdList[j].courseCode) {
@@ -446,7 +436,7 @@ export default {
 				}
 			}
 
-			console.log(this.showCourse1);
+			
 
 
 		},
@@ -461,7 +451,6 @@ export default {
 		ToPopup(index, type) {
 			this.type = type;
 			this.courseIndex = index;
-			console.log(this.showCourse);
 			this.$refs.popup.open(type)//从左边弹出
 		},
 		getStorageNumber() {

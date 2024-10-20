@@ -113,20 +113,18 @@ export default {
           console.log(item.classTime);
 
           //1.提取课程开始时间和结束时间
-          courseStartTime = item.classTime.substring(3, 8);
-          courseEndTime = item.classTime.substring(9, 14);
+          courseStartTime = item.classTime[3];
+          courseEndTime = item.classTime[5];
           courseDay = item.classTime.substring(0, 2);
-
           //2.根据开始时间和结束时间算出是第几节课
-          let startNum = that.includeStartTime(courseStartTime);
-          let endNum = that.includeEndTime(courseEndTime);
+          let startNum = courseStartTime;
+          let endNum = courseEndTime;
           let dayNum = that.includeWeekData(courseDay);
 
           let result = endNum - (startNum - 1);
-
+          let week = item.classTime.slice(7);
           //3.将课程存入数组中
-          that.timetables[dayNum - 1].splice(startNum - 1, result, ...Array(result).fill(item.className));
-          console.log(that.timetables);
+          that.timetables[dayNum - 1].splice(startNum - 1, result, ...Array(result).fill(item.className+"("+week+"周)"));
 
 
         });
@@ -176,7 +174,7 @@ export default {
 
     toggle(type) {
       console.log(course.name);
-
+      that.timetables[dayNum - 1].splice(startNum - 1, result, ...Array(result).fill(item.className));
       //获取课程名称
     },
     getStorageNumber() {

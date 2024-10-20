@@ -266,7 +266,6 @@ var _default = {
         }
       }).then(function (res) {
         that.courseList = res.data.data;
-        console.log(that.courseList);
       }).catch(function (err) {
         console.log(err);
       });
@@ -281,10 +280,9 @@ var _default = {
         method: "POST",
         data: {
           classId: id,
-          studentNumber: that.studentNumber //写死
+          studentNumber: that.studentNumber
         }
       }).then(function (res) {
-        console.log(res);
         //从列表中删除该课程
         var dropIndex = that.courseList.findIndex(function (item) {
           if (item.id === id) {

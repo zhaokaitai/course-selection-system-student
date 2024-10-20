@@ -69,7 +69,6 @@ export default {
         data: { studentNumber: that.studentNumber }
       }).then(res => {
         that.courseList = res.data.data;
-        console.log(that.courseList);
       }).catch(err => {
         console.log(err);
       })
@@ -87,10 +86,9 @@ export default {
         data:
         {
           classId: id,
-          studentNumber: that.studentNumber//写死
+          studentNumber: that.studentNumber
         }
       }).then(res => {
-        console.log(res);
         //从列表中删除该课程
         let dropIndex = that.courseList.findIndex(item => {
           if (item.id === id) {

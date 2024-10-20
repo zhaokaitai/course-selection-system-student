@@ -307,19 +307,17 @@ var _default = {
           console.log(item.classTime);
 
           //1.提取课程开始时间和结束时间
-          courseStartTime = item.classTime.substring(3, 8);
-          courseEndTime = item.classTime.substring(9, 14);
+          courseStartTime = item.classTime[3];
+          courseEndTime = item.classTime[5];
           courseDay = item.classTime.substring(0, 2);
-
           //2.根据开始时间和结束时间算出是第几节课
-          var startNum = that.includeStartTime(courseStartTime);
-          var endNum = that.includeEndTime(courseEndTime);
+          var startNum = courseStartTime;
+          var endNum = courseEndTime;
           var dayNum = that.includeWeekData(courseDay);
           var result = endNum - (startNum - 1);
-
+          var week = item.classTime.slice(7);
           //3.将课程存入数组中
-          (_that$timetables = that.timetables[dayNum - 1]).splice.apply(_that$timetables, [startNum - 1, result].concat((0, _toConsumableArray2.default)(Array(result).fill(item.className))));
-          console.log(that.timetables);
+          (_that$timetables = that.timetables[dayNum - 1]).splice.apply(_that$timetables, [startNum - 1, result].concat((0, _toConsumableArray2.default)(Array(result).fill(item.className + "(" + week + "周)"))));
         });
       }).catch(function (err) {
         console.log(err);
@@ -356,8 +354,9 @@ var _default = {
       return num;
     },
     toggle: function toggle(type) {
+      var _that$timetables2;
       console.log(course.name);
-
+      (_that$timetables2 = that.timetables[dayNum - 1]).splice.apply(_that$timetables2, [startNum - 1, result].concat((0, _toConsumableArray2.default)(Array(result).fill(item.className))));
       //获取课程名称
     },
     getStorageNumber: function getStorageNumber() {
