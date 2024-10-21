@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 20/10/2024 16:01:30
+ Date: 21/10/2024 21:47:06
 */
 
 SET NAMES utf8mb4;
@@ -73,6 +73,7 @@ INSERT INTO `course` VALUES ('GK_JK_001', '51单片机', NULL, 1, 51, 4, '4', '�
 INSERT INTO `course` VALUES ('GK_JK_002', 'UML建模语言', NULL, 1, 34, 3, '3', '专业课', '必修', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '测试课程描述', '测试课程大纲', NULL, NULL);
 INSERT INTO `course` VALUES ('GK_JK_003', '软件工程综合实践', NULL, 1, 51, 4, '4', '专业课', '必修', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'GK_JK_002', '测试课程描述', '测试课程大纲', NULL, NULL);
 INSERT INTO `course` VALUES ('GK_JK_004', 'JAVAEE', NULL, 1, 34, 4, '4', '专业课', '必修', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'JavaEE（现在称为Jakarta EE）是一个基于Java的为企业级应用开发提供的一套规范和API。以下是一个JavaEE课程的大纲示例，适合初学者到中级开发者：', 'JavaEE（现在称为Jakarta EE）是一个基于Java的为企业级应用开发提供的一套规范和API。以下是一个JavaEE课程的大纲示例，适合初学者到中级开发者：', NULL, NULL);
+INSERT INTO `course` VALUES ('GK_JK_005', '算法分析与设计', NULL, 1, 34, 4, '4', '专业课', '选修', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '这是课程描述', '这是课程大纲', NULL, NULL);
 INSERT INTO `course` VALUES ('GX_001', '旅游学院测试', NULL, 2, 34, 2, '4', '校选课', '选修', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '这是课程描述', '这是教学大纲', NULL, NULL);
 
 -- ----------------------------
@@ -86,11 +87,15 @@ CREATE TABLE `learning_lesson`  (
   `teacher_id` varchar(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '教工号',
   `id_optional` tinyint NULL DEFAULT NULL COMMENT '是否自选（0-是 1不是）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 89 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 96 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of learning_lesson
 -- ----------------------------
+INSERT INTO `learning_lesson` VALUES (92, '202122450635', 1, NULL, 0);
+INSERT INTO `learning_lesson` VALUES (93, '202122450635', 7, NULL, 0);
+INSERT INTO `learning_lesson` VALUES (94, '202122450635', 6, NULL, 0);
+INSERT INTO `learning_lesson` VALUES (95, '202122450635', 8, NULL, 0);
 
 -- ----------------------------
 -- Table structure for major
@@ -143,7 +148,7 @@ CREATE TABLE `operation_record`  (
   `course_operation` tinyint NOT NULL COMMENT '选课操作（0-选课 1-退课）',
   `time` datetime NOT NULL COMMENT '操作时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 170 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 180 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of operation_record
@@ -315,6 +320,16 @@ INSERT INTO `operation_record` VALUES (166, '202122450635', '曹哲', 'GK_JK_002
 INSERT INTO `operation_record` VALUES (167, '202122450635', '曹哲', 'GK_JK_002', 'UML建模语言', 1, '2024-10-20 15:11:43');
 INSERT INTO `operation_record` VALUES (168, '202122450635', '曹哲', 'GK_JK_004', 'JAVAEE', 1, '2024-10-20 15:11:55');
 INSERT INTO `operation_record` VALUES (169, '202122450635', '曹哲', 'GX_001', '旅游学院测试', 1, '2024-10-20 15:12:01');
+INSERT INTO `operation_record` VALUES (170, '202122450635', '曹哲', 'GX_001', '旅游学院测试', 0, '2024-10-21 21:40:37');
+INSERT INTO `operation_record` VALUES (171, '202122450635', '曹哲', 'GK_JK_002', 'UML建模语言', 0, '2024-10-21 21:41:04');
+INSERT INTO `operation_record` VALUES (172, '202122450635', '曹哲', 'GK_JK_004', 'JAVAEE', 0, '2024-10-21 21:41:08');
+INSERT INTO `operation_record` VALUES (173, '202122450635', '曹哲', 'GX_001', '旅游学院测试', 1, '2024-10-21 21:41:37');
+INSERT INTO `operation_record` VALUES (174, '202122450635', '曹哲', 'GK_JK_002', 'UML建模语言', 1, '2024-10-21 21:41:39');
+INSERT INTO `operation_record` VALUES (175, '202122450635', '曹哲', 'GK_JK_004', 'JAVAEE', 1, '2024-10-21 21:41:41');
+INSERT INTO `operation_record` VALUES (176, '202122450635', '曹哲', 'GK_JK_002', 'UML建模语言', 0, '2024-10-21 21:45:47');
+INSERT INTO `operation_record` VALUES (177, '202122450635', '曹哲', 'GK_JK_003', '软件工程综合实践', 0, '2024-10-21 21:45:51');
+INSERT INTO `operation_record` VALUES (178, '202122450635', '曹哲', 'GK_JK_004', 'JAVAEE', 0, '2024-10-21 21:45:54');
+INSERT INTO `operation_record` VALUES (179, '202122450635', '曹哲', 'GK_JK_005', '算法分析与设计', 0, '2024-10-21 21:45:58');
 
 -- ----------------------------
 -- Table structure for student
@@ -400,13 +415,15 @@ CREATE TABLE `teaching_class`  (
 -- ----------------------------
 -- Records of teaching_class
 -- ----------------------------
-INSERT INTO `teaching_class` VALUES (1, 'GK_JK_002', 'uml教学1班', '北三教A203', '周三/1-2/1-17', '北三教A203', 90, 95, '123456789', '', '', '');
+INSERT INTO `teaching_class` VALUES (1, 'GK_JK_002', 'uml教学1班', '北三教A203', '周三/1-2/1-17', '北三教A203', 90, 94, '123456789', '', '', '');
 INSERT INTO `teaching_class` VALUES (2, 'GK_JK_002', 'uml教学2班', '北三教A205', '周五/1-2/1-17', '北三教A205', 90, 95, '123456789', NULL, NULL, NULL);
 INSERT INTO `teaching_class` VALUES (3, 'GK_JK_001', '单片机教学1班', '北三教A205', '周一/3-5/1-17', '北三教A205', 95, 95, '123456789', NULL, NULL, NULL);
 INSERT INTO `teaching_class` VALUES (4, 'GX_001', '测试1班', '北三教C122', '周五/1-2/1-9', '北三教C122', 105, 200, '123456789', NULL, NULL, NULL);
 INSERT INTO `teaching_class` VALUES (5, 'GX_001', '测试2班', '北三教C122', '周四/1-2/10-17', '北三教C122', 100, 200, '123456789', NULL, NULL, NULL);
-INSERT INTO `teaching_class` VALUES (6, 'GK_JK_004', 'javaEE1', '北三教B104', '周二/6-7/1-17', '北三教B104', 29, 50, '123456789', NULL, NULL, NULL);
-INSERT INTO `teaching_class` VALUES (7, 'GK_JK_003', '软工实践教学班', '北三教C113', '周五/1-2/1-9', '北三教C113', 59, 60, '123456789', NULL, NULL, NULL);
+INSERT INTO `teaching_class` VALUES (6, 'GK_JK_004', 'javaEE1', '北三教B104', '周二/6-7/1-17', '北三教B104', 29, 49, '123456789', NULL, NULL, NULL);
+INSERT INTO `teaching_class` VALUES (7, 'GK_JK_003', '软工实践教学班', '北三教C113', '周五/1-2/1-9', '北三教C113', 59, 59, '123456789', NULL, NULL, NULL);
+INSERT INTO `teaching_class` VALUES (8, 'GK_JK_005', '算法1班', '北三教A104', '周一/3-5/1-17', '北三教A104', 21, 49, '123456789', NULL, NULL, NULL);
+INSERT INTO `teaching_class` VALUES (9, 'GK_JK_005', '算法2班', '北三教A104', '周三/3-5/1-17', '北三教A104', 30, 50, '123456789', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for teaching_material

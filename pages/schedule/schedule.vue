@@ -19,7 +19,7 @@ export default {
     return {
       weekNumbers: 20,//一共显示几周
       controlWeek: 1,//显示的第几周
-      weekButton: true,//开启上一周下一周按钮
+      weekButton: false,//开启上一周下一周按钮
       startdDate: '', //开始时间  默认为当前时间
       timetables: [
         ['', '', '', '', '', '', '', '', '', '', '', '', ''],
@@ -53,8 +53,9 @@ export default {
         { index: '6', name: "周六" },
         { index: '7', name: "周日" },
       ],
-      studentNumber:""
-
+      studentNumber:"",//学号
+      oneToNineList:[],//1-9周课程
+      TenToList:[],//10-17周课程
     }
   },
   onLoad(options) {
