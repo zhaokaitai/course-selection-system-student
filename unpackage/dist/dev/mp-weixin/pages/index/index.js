@@ -121,8 +121,14 @@ try {
     uniPopup: function () {
       return __webpack_require__.e(/*! import() | uni_modules/uni-popup/components/uni-popup/uni-popup */ "uni_modules/uni-popup/components/uni-popup/uni-popup").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-popup/components/uni-popup/uni-popup.vue */ 147))
     },
+    uniSearchBar: function () {
+      return Promise.all(/*! import() | uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-search-bar/components/uni-search-bar/uni-search-bar.vue */ 237))
+    },
     uniSection: function () {
       return __webpack_require__.e(/*! import() | uni_modules/uni-section/components/uni-section/uni-section */ "uni_modules/uni-section/components/uni-section/uni-section").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-section/components/uni-section/uni-section.vue */ 154))
+    },
+    uniDataCheckbox: function () {
+      return Promise.all(/*! import() | uni_modules/uni-data-checkbox/components/uni-data-checkbox/uni-data-checkbox */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-data-checkbox/components/uni-data-checkbox/uni-data-checkbox")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-data-checkbox/components/uni-data-checkbox/uni-data-checkbox.vue */ 248))
     },
   }
 } catch (e) {
@@ -272,6 +278,29 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/r
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default = {
   data: function data() {
     return {
@@ -290,9 +319,10 @@ var _default = {
         //专业
         courseName: "",
         //课程名称(搜索框用)
-        courseType: "" //课程类别
+        courseType: "",
+        //课程类别
+        charater: ""
       },
-
       collegeValue: 0,
       //学院字段值（用于根据学院筛选专业）
       //从后端获取的所有课程列表
@@ -368,7 +398,16 @@ var _default = {
         course_code: "GK_JK_002"
       }],
       //展示在前台的教学班
-      showCourseClass: []
+      showCourseClass: [],
+      isCharacter: [
+      //必修选修状态纽
+      {
+        text: "必修",
+        value: "必修"
+      }, {
+        text: "选修",
+        value: "选修"
+      }]
     };
   },
   onLoad: function onLoad() {
@@ -392,6 +431,7 @@ var _default = {
   },
   methods: {
     /**点击按钮弹出弹出层 */toggle: function toggle(type) {
+      console.log(this.showCourse1);
       this.type = type;
       this.$refs.popup.open(type); //从左边弹出
     },
@@ -422,19 +462,27 @@ var _default = {
     /**查询 */searchCourse: function searchCourse() {
       var _this = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
-        var searchCollege, searchSubject, searchValue, queryCourse;
+        var searchCollege, searchCharacter, searchValue, queryCourse;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 searchCollege = _this.queryCondition.college;
-                searchSubject = _this.queryCondition.subject;
+                searchCharacter = _this.queryCondition.character;
+                console.log(searchCharacter);
                 searchValue = _this.searchValue; //搜索值
                 //查询
                 queryCourse = "";
-                if (searchCollege) {
+                if (searchCharacter) {
                   queryCourse = _this.course.filter(function (item) {
-                    return item.course.collegeId === 1;
+                    return item.course.courseCharacter === searchCharacter;
+                  });
+                  console.log(queryCourse);
+                }
+                console.log(queryCourse);
+                if (searchCollege) {
+                  queryCourse = queryCourse.filter(function (item) {
+                    return item.course.collegeId === searchCollege;
                   });
                 }
                 if (searchValue) {
@@ -442,11 +490,11 @@ var _default = {
                     return item.course.name.includes(searchValue);
                   });
                 }
-                _this.showCourse = queryCourse;
+                _this.showCourse1 = queryCourse;
 
                 //关闭弹出层
                 _this.$refs.popup.close();
-              case 8:
+              case 11:
               case "end":
                 return _context.stop();
             }
@@ -678,7 +726,7 @@ var _default = {
     ToPopup: function ToPopup(index, type) {
       this.type = type;
       this.courseIndex = index;
-      this.$refs.popup.open(type); //从左边弹出
+      this.$refs.popup2.open(type); //从左边弹出
     },
     getStorageNumber: function getStorageNumber() {
       var value = uni.getStorageSync('studentNumber');

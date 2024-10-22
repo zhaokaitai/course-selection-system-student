@@ -4,7 +4,7 @@
 
 		<!--查看查询条件的按钮-->
 		<view class="button_box">
-			<button class="query_button" @click=""><text class="button_text">选择课程的筛选条件</text></button>
+			<button class="query_button" @click="toggle('left')"><text class="button_text">选择课程的筛选条件</text></button>
 		</view>
 
 		<!--课程展示-->
@@ -61,9 +61,30 @@
 
 		<!--popup弹出层-->
 
-
 		<view>
 			<uni-popup ref="popup" background-color="#fff" type="left">
+				<!--搜索栏-->
+				<view><uni-search-bar v-model="searchValue" @confirm="searchCourse" /></view>
+				<!--课程类别筛选条件-->
+				<view class="pop-content">
+					<uni-section class="mb-10" title="课程类别" type="line" titleFontSize="20px"
+						titleColor="#333"></uni-section>
+					<uni-data-checkbox v-model="queryCondition.character" :localdata="isCharacter" />
+				</view>
+				<!--学院筛选条件-->
+				<view class="pop-content">
+					<uni-section class="mb-10" title="学院" type="line" titleFontSize="20px"
+						titleColor="#333"></uni-section>
+					<uni-data-checkbox v-model="queryCondition.college" :localdata="courseCollege"
+						@change="changeCollege" />
+				</view>
+			</uni-popup>
+
+		</view>
+
+
+		<view>
+			<uni-popup ref="popup2" background-color="#fff" type="bottom">
 				<view class="pop-content">
 					<uni-section class="mb-10" title="课程描述" type="line" titleFontSize="20px"
 						titleColor="#333"></uni-section>
@@ -77,6 +98,8 @@
 
 			</uni-popup>
 		</view>
+
+		
 
 	</view>
 
@@ -94,7 +117,8 @@ export default {
 				college: "",//学院
 				subject: "",//专业
 				courseName: "",//课程名称(搜索框用)
-				courseType: ""//课程类别
+				courseType: "",//课程类别
+				charater: ""
 			},
 			collegeValue: 0,//学院字段值（用于根据学院筛选专业）
 			//从后端获取的所有课程列表
@@ -184,7 +208,19 @@ export default {
 				}
 			],
 			//展示在前台的教学班
-			showCourseClass: []
+			showCourseClass: [],
+
+			isCharacter:[//必修选修状态纽
+				{
+					text:"必修",
+					value:"必修"
+				},
+				{
+					text:"选修",
+					value:"选修"
+				}
+			],
+			
 
 		}
 	},
@@ -215,6 +251,7 @@ export default {
 	methods: {
 		/**点击按钮弹出弹出层 */
 		toggle(type) {
+			console.log(this.showCourse1);
 			this.type = type;
 
 			this.$refs.popup.open(type)//从左边弹出
@@ -249,15 +286,21 @@ export default {
 		async searchCourse() {
 
 			var searchCollege = this.queryCondition.college;
-			var searchSubject = this.queryCondition.subject;
-
+			var searchCharacter = this.queryCondition.character;
+			console.log(searchCharacter);
 
 			var searchValue = this.searchValue;//搜索值
 
 			//查询
 			let queryCourse = "";
+			if(searchCharacter)
+			{
+				queryCourse = this.course.filter(item => item.course.courseCharacter === searchCharacter)
+				console.log(queryCourse);
+			}
+			console.log(queryCourse);
 			if (searchCollege) {
-				queryCourse = this.course.filter(item => item.course.collegeId === 1);
+				queryCourse = queryCourse.filter(item => item.course.collegeId === searchCollege);
 			}
 			if (searchValue) {
 				queryCourse = queryCourse.filter(item => item.course.name.includes(searchValue));
@@ -266,7 +309,8 @@ export default {
 
 
 
-			this.showCourse = queryCourse;
+			this.showCourse1 = queryCourse;
+
 
 			//关闭弹出层
 			this.$refs.popup.close();
@@ -425,18 +469,18 @@ export default {
 					if (that.showCourse1[i] && classIdList[j]) {
 						if (that.showCourse1[i].course.courseCode === classIdList[j].courseCode) {
 							that.showCourse1[i].status = 1;
-							console.log("第"+i+"个课程"+that.showCourse1[i].course.courseCode+"，第"+j+"个选课"+classIdList[j].courseCode);
+							console.log("第" + i + "个课程" + that.showCourse1[i].course.courseCode + "，第" + j + "个选课" + classIdList[j].courseCode);
 							break;
 						}
 						else {
 							that.showCourse1[i].status = 0;
-							console.log("111第"+i+"个课程"+that.showCourse1[i].course.courseCode+"，第"+j+"个选课"+classIdList[j].courseCode);
+							console.log("111第" + i + "个课程" + that.showCourse1[i].course.courseCode + "，第" + j + "个选课" + classIdList[j].courseCode);
 						}
 					}
 				}
 			}
 
-			
+
 
 
 		},
@@ -451,7 +495,7 @@ export default {
 		ToPopup(index, type) {
 			this.type = type;
 			this.courseIndex = index;
-			this.$refs.popup.open(type)//从左边弹出
+			this.$refs.popup2.open(type)//从左边弹出
 		},
 		getStorageNumber() {
 			let value = uni.getStorageSync('studentNumber');
