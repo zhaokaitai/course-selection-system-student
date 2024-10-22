@@ -23,7 +23,6 @@
 									<uni-th width="30" align="center">上课地点</uni-th>
 									<uni-th width="30" align="center">已选/容量</uni-th>
 									<uni-th width="30" align="center">开课学期</uni-th>
-									<uni-th width="30" align="center">开课学院</uni-th>
 									<uni-th width="30" align="center">学分</uni-th>
 									<uni-th width="30" align="center">操作</uni-th>
 									<uni-th width="30" align="center">查看详情</uni-th>
@@ -33,8 +32,7 @@
 									<uni-td>{{ item1.classTime }}</uni-td>
 									<uni-td>{{ item1.classroom }}</uni-td>
 									<uni-td>{{ item1.selectedNum }}/{{ item1.capacity }}</uni-td>
-									<uni-td>第{{ item.course.beginTerm }}学期</uni-td>
-									<uni-td>{{ item.course.courseType }}</uni-td>
+									<uni-td>{{ item1.currentTim }}{{item1.currentTerm}}学期</uni-td>
 									<uni-td>{{ item.course.credit }}</uni-td>
 									<uni-td>
 
