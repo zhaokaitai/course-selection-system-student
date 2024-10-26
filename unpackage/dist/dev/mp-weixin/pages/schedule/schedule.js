@@ -99,7 +99,7 @@ var components
 try {
   components = {
     lyCurriculumtable: function () {
-      return __webpack_require__.e(/*! import() | components/ly-curriculumtable/ly-curriculumtable */ "components/ly-curriculumtable/ly-curriculumtable").then(__webpack_require__.bind(null, /*! @/components/ly-curriculumtable/ly-curriculumtable.vue */ 161))
+      return __webpack_require__.e(/*! import() | components/ly-curriculumtable/ly-curriculumtable */ "components/ly-curriculumtable/ly-curriculumtable").then(__webpack_require__.bind(null, /*! @/components/ly-curriculumtable/ly-curriculumtable.vue */ 188))
     },
   }
 } catch (e) {
@@ -166,7 +166,7 @@ exports.default = void 0;
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ 18));
 var Timetable = function Timetable() {
   __webpack_require__.e(/*! require.ensure | components/ly-curriculumtable/ly-curriculumtable */ "components/ly-curriculumtable/ly-curriculumtable").then((function () {
-    return resolve(__webpack_require__(/*! ../../components/ly-curriculumtable/ly-curriculumtable.vue */ 161));
+    return resolve(__webpack_require__(/*! ../../components/ly-curriculumtable/ly-curriculumtable.vue */ 188));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var _default = {
@@ -306,22 +306,27 @@ var _default = {
         var courseStartTime = ''; //课程开始时间
         var courseEndTime = ''; //课程结束时间
         var courseDay = ''; //课程日期
-        that.courseList.forEach(function (item, index) {
+        that.courseList.forEach(function (item) {
           var _that$timetables;
           console.log(item.classTime);
 
           //1.提取课程开始时间和结束时间
-          courseStartTime = item.classTime[3];
-          courseEndTime = item.classTime[5];
+
+          //取出开始的时间
+          var match = item.classTime.match(/\/(\d+)-(\d+)\//);
+          var courseStartTime = match[1];
+          var courseEndTime = match[2];
           courseDay = item.classTime.substring(0, 2);
+
           //2.根据开始时间和结束时间算出是第几节课
           var startNum = courseStartTime;
           var endNum = courseEndTime;
           var dayNum = that.includeWeekData(courseDay);
           var result = endNum - (startNum - 1);
-          var week = item.classTime.slice(7);
+          console.log(result);
+          var week = item.classTime.match(/\/([^\/]*)$/);
           //3.将课程存入数组中
-          (_that$timetables = that.timetables[dayNum - 1]).splice.apply(_that$timetables, [startNum - 1, result].concat((0, _toConsumableArray2.default)(Array(result).fill(item.className + "(" + week + "周)"))));
+          (_that$timetables = that.timetables[dayNum - 1]).splice.apply(_that$timetables, [startNum - 1, result].concat((0, _toConsumableArray2.default)(Array(result).fill(item.className + "(" + week[1] + "周)" + item.classroom))));
         });
       }).catch(function (err) {
         console.log(err);

@@ -110,22 +110,28 @@ export default {
         let courseStartTime = '';//课程开始时间
         let courseEndTime = '';//课程结束时间
         let courseDay = '';//课程日期
-        that.courseList.forEach((item, index) => {
+        that.courseList.forEach((item) => {
           console.log(item.classTime);
 
           //1.提取课程开始时间和结束时间
-          courseStartTime = item.classTime[3];
-          courseEndTime = item.classTime[5];
+          
+          //取出开始的时间
+          let match = item.classTime.match(/\/(\d+)-(\d+)\//);
+          let courseStartTime = match[1];
+          let courseEndTime = match[2];
+
           courseDay = item.classTime.substring(0, 2);
+
           //2.根据开始时间和结束时间算出是第几节课
           let startNum = courseStartTime;
           let endNum = courseEndTime;
           let dayNum = that.includeWeekData(courseDay);
 
           let result = endNum - (startNum - 1);
-          let week = item.classTime.slice(7);
+          console.log(result);
+          let week = item.classTime.match(/\/([^\/]*)$/);
           //3.将课程存入数组中
-          that.timetables[dayNum - 1].splice(startNum - 1, result, ...Array(result).fill(item.className+"("+week+"周)"));
+          that.timetables[dayNum - 1].splice(startNum - 1, result, ...Array(result).fill(item.className+"("+week[1]+"周)"+item.classroom));
 
 
         });

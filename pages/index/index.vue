@@ -4,7 +4,7 @@
 
 		<!--查看查询条件的按钮-->
 		<view class="button_box">
-			<button class="query_button" @click="toggle('left')"><text class="button_text">选择课程的筛选条件</text></button>
+			<view><uni-search-bar v-model="searchValue" @confirm="searchCourse" /></view>
 		</view>
 
 		<!--课程展示-->
@@ -64,7 +64,7 @@
 		<view>
 			<uni-popup ref="popup" background-color="#fff" type="left">
 				<!--搜索栏-->
-				<view><uni-search-bar v-model="searchValue" @confirm="searchCourse" /></view>
+				
 				<!--课程类别筛选条件-->
 				<view class="pop-content">
 					<uni-section class="mb-10" title="课程类别" type="line" titleFontSize="20px"
@@ -285,25 +285,12 @@ export default {
 		/**查询 */
 		async searchCourse() {
 
-			var searchCollege = this.queryCondition.college;
-			var searchCharacter = this.queryCondition.character;
-			console.log(searchCharacter);
-
 			var searchValue = this.searchValue;//搜索值
 
 			//查询
 			let queryCourse = "";
-			if(searchCharacter)
-			{
-				queryCourse = this.course.filter(item => item.course.courseCharacter === searchCharacter)
-				console.log(queryCourse);
-			}
-			console.log(queryCourse);
-			if (searchCollege) {
-				queryCourse = queryCourse.filter(item => item.course.collegeId === searchCollege);
-			}
 			if (searchValue) {
-				queryCourse = queryCourse.filter(item => item.course.name.includes(searchValue));
+				queryCourse = this.course.filter(item => item.course.name.includes(searchValue));
 			}
 
 
