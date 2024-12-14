@@ -32,7 +32,6 @@
 									<uni-td>{{ item1.classTime }}</uni-td>
 									<uni-td>{{ item1.classroom }}</uni-td>
 									<uni-td>{{ item1.selectedNum }}/{{ item1.capacity }}</uni-td>
-									<uni-td>第{{ item.course.beginTerm }}学期</uni-td>
 									<uni-td>{{ item1.currentTim }}{{item1.currentTerm}}学期</uni-td>
 									<uni-td>{{ item.course.credit }}</uni-td>
 									<uni-td>
